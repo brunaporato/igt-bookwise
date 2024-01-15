@@ -1,6 +1,6 @@
 import { styled } from '@/styles/stitches.config'
 
-export const HomeContainer = styled('div', {
+export const Container = styled('div', {
   width: '100%',
   display: 'flex',
   alignItems: 'center',

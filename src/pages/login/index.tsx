@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import {
-  HomeContainer,
+  Container,
   LoginContainer,
   SideImage,
   SocialLogin,
@@ -13,9 +13,9 @@ import Google from '../../public/icons/google-logo.svg'
 import Github from '../../public/icons/github-logo.svg'
 import Guest from '../../public/icons/rocket.svg'
 
-export default function Home() {
+export default function Login() {
   return (
-    <HomeContainer>
+    <Container>
       <SideImage>
         <Image src={Logo} className="logo" alt="" />
         <Image
@@ -46,6 +46,6 @@ export default function Home() {
           </div>
         </div>
       </LoginContainer>
-    </HomeContainer>
+    </Container>
   )
 }
