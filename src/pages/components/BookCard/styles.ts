@@ -1,5 +1,4 @@
 import { styled } from '@/styles/stitches.config'
-import { NodeNextRequest } from 'next/dist/server/base-http/node'
 
 export const CardContainer = styled('div', {
   display: 'flex',

@@ -21,6 +21,8 @@ export const Container = styled('nav', {
   '.top': {
     alignSelf: 'center',
   },
+
+  position: 'fixed',
 })
 
 export const Menu = styled('ul', {

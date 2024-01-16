@@ -6,7 +6,7 @@ interface BookCardProps {
   small?: boolean
 }
 
-export function BookCard({ small = true }: BookCardProps) {
+export function BookCard({ small = false }: BookCardProps) {
   return (
     <CardContainer isSmall={small}>
       <Image
