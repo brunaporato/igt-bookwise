@@ -1,4 +1,5 @@
 import { styled } from '@/styles/stitches.config'
+import { NodeNextRequest } from 'next/dist/server/base-http/node'
 
 export const CardContainer = styled('div', {
   display: 'flex',
@@ -16,6 +17,20 @@ export const CardContainer = styled('div', {
     boxShadow: '0 0 0 2px $colors$gray500',
     transition: 'all .3s',
   },
+
+  variants: {
+    isSmall: {
+      true: {
+        background: '$gray700',
+        maxWidth: 324,
+
+        '> img': {
+          width: 64,
+          height: 94,
+        },
+      },
+    },
+  },
 })
 
 export const Content = styled('main', {
@@ -27,6 +42,27 @@ export const Content = styled('main', {
     fontSize: '$sm',
     color: '$gray300',
     lineHeight: 1.6,
+  },
+
+  variants: {
+    isSmall: {
+      true: {
+        '> .date-rating': {
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          justifyContent: 'space-between',
+          height: 'stretch',
+
+          '.date': {
+            display: 'none',
+          },
+
+          section: {
+            margin: 0,
+          },
+        },
+      },
+    },
   },
 })
 
@@ -42,7 +78,6 @@ export const TopSection = styled('section', {
 
   '> .rating': {
     color: '$purple100',
-
     display: 'flex',
     gap: '$1',
   },
