@@ -23,10 +23,18 @@ export default function Home() {
           <Timeline>
             <p>Most recent ratings</p>
             <CardsContainer>
-              <BookCard />
-              <BookCard />
-              <BookCard />
-              <BookCard />
+              <BookCard
+                title="Entendendo Algoritmos"
+                author="Adjia Galine"
+                image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
+                description="Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectu..."
+              />
+              <BookCard
+                title="O Hobbit"
+                author="J.R.R. Tolkien"
+                image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
+                description="Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh..."
+              />
             </CardsContainer>
           </Timeline>
         </div>
@@ -39,10 +47,18 @@ export default function Home() {
             </button>
           </div>
           <CardsContainer>
-            <BookCard small={true} />
-            <BookCard small={true} />
-            <BookCard small={true} />
-            <BookCard small={true} />
+            <BookCard
+              small={true}
+              title="Entendendo Algoritmos"
+              author="Adjia Galine"
+              image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
+            />
+            <BookCard
+              small={true}
+              title="O Hobbit"
+              author="J.R.R. Tolkien"
+              image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
+            />
           </CardsContainer>
         </PopularBooks>
       </HomeContent>

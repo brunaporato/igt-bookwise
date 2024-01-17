@@ -1,20 +1,27 @@
-import Image from 'next/image'
 import { CardContainer, Content, TitleAuthor, TopSection } from './styles'
 import { Star } from '@phosphor-icons/react'
 
 interface BookCardProps {
   small?: boolean
+  image: string
+  title: string
+  author: string
+  date?: string
+  description?: string
 }
 
-export function BookCard({ small = false }: BookCardProps) {
+export function BookCard({
+  small = false,
+  image,
+  title,
+  author,
+  date,
+  description,
+}: BookCardProps) {
+  console.log(image)
   return (
     <CardContainer isSmall={small}>
-      <Image
-        src="https://m.media-amazon.com/images/I/517I6z9QK4L._SY445_SX342_.jpg"
-        alt=""
-        width={108}
-        height={152}
-      />
+      <img src={image} alt="" width={108} height={152} />
       <Content isSmall={small}>
         <div className="date-rating">
           <TopSection>
@@ -28,18 +35,11 @@ export function BookCard({ small = false }: BookCardProps) {
             </div>
           </TopSection>
           <TitleAuthor>
-            <h1>Entendendo Algoritmos</h1>
-            <span>Aditya Bhargava</span>
+            <h1>{title}</h1>
+            <span>{author}</span>
           </TitleAuthor>
         </div>
-        {small ? (
-          <></>
-        ) : (
-          <p className="description">
-            Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis.
-            Penatibus id vestibulum imperdiet a at imperdiet lectu...
-          </p>
-        )}
+        {small ? <></> : <p className="description">{description}</p>}
       </Content>
     </CardContainer>
   )
