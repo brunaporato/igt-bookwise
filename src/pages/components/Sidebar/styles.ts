@@ -74,13 +74,14 @@ export const Profile = styled('div', {
   display: 'flex',
   gap: '$3',
   alignItems: 'center',
+  justifyContent: 'center',
 
   '> p': {
     fontSize: '$sm',
   },
 })
 
-export const LogoutButton = styled('button', {
+export const SidebarButton = styled('button', {
   all: 'unset',
   padding: '$1',
   color: '#F75A68',
@@ -96,5 +97,13 @@ export const LogoutButton = styled('button', {
   '&:hover': {
     background: 'rgba(230, 232, 242, 0.04)',
     transition: 'all .3s',
+  },
+
+  variants: {
+    userState: {
+      guest: {
+        color: '$green100',
+      },
+    },
   },
 })

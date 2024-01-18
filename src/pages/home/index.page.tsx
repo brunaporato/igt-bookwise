@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <Sidebar />
+      <Sidebar isSessionActive={isSessionActive} />
       <HomeContent>
         <div className="timeline">
           <div className="title">
