@@ -7,9 +7,13 @@ import {
   HomeContent,
   PopularBooks,
   Timeline,
+  TopSubtitle,
 } from './styles'
+import { useState } from 'react'
 
 export default function Home() {
+  const [isSessionActive, setIsSessionActive] = useState(false)
+
   return (
     <HomeContainer>
       <Sidebar />
@@ -20,8 +24,30 @@ export default function Home() {
             <h1>Início</h1>
           </div>
 
+          {isSessionActive && (
+            <>
+              <TopSubtitle>
+                <p>Your last reading</p>
+                <button>
+                  See more <CaretRight weight="bold" />
+                </button>
+              </TopSubtitle>
+              <CardsContainer>
+                <BookCard
+                  title="O Hobbit"
+                  author="J.R.R. Tolkien"
+                  image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
+                  description="Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh..."
+                  rating={2}
+                />
+              </CardsContainer>
+            </>
+          )}
+
           <Timeline>
-            <p>Most recent ratings</p>
+            <TopSubtitle>
+              <p>Most recent ratings</p>
+            </TopSubtitle>
             <CardsContainer>
               <BookCard
                 title="Entendendo Algoritmos"
@@ -42,12 +68,12 @@ export default function Home() {
         </div>
 
         <PopularBooks>
-          <div className="top">
+          <TopSubtitle>
             <p>Popular Books</p>
             <button>
               See more <CaretRight weight="bold" />
             </button>
-          </div>
+          </TopSubtitle>
           <CardsContainer>
             <BookCard
               small={true}

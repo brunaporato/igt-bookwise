@@ -39,6 +39,8 @@ export const Timeline = styled('div', {
   fontSize: '$sm',
   lineHeight: 1.6,
 
+  marginTop: '$10',
+
   '> .cards': {
     display: 'flex',
     flexDirection: 'column',
@@ -51,37 +53,39 @@ export const PopularBooks = styled('section', {
   flexDirection: 'column',
   gap: '$4',
 
-  marginTop: '4.875rem',
+  marginTop: '5.875rem',
 
-  '> .top': {
+  '> .top': {},
+})
+
+export const TopSubtitle = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  p: {
+    fontSize: '$sm',
+  },
+
+  button: {
+    all: 'unset',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: '$2',
+    padding: '$2',
+    fontSize: '$sm',
+    color: '$purple100',
 
-    p: {
-      fontSize: '$sm',
-    },
+    fontWeight: 700,
+    lineHeight: 1.6,
 
-    button: {
-      all: 'unset',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '$2',
-      padding: '$2',
-      fontSize: '$sm',
-      color: '$purple100',
+    borderRadius: 4,
 
-      fontWeight: 700,
-      lineHeight: 1.6,
+    cursor: 'pointer',
 
-      borderRadius: 4,
-
-      cursor: 'pointer',
-
-      '&:hover': {
-        background: 'rgba(131, 129, 217, 0.06)',
-        transition: 'background .3s',
-      },
+    '&:hover': {
+      background: 'rgba(131, 129, 217, 0.06)',
+      transition: 'background .3s',
     },
   },
 })
