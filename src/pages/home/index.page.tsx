@@ -12,7 +12,7 @@ import {
 import { useState } from 'react'
 
 export default function Home() {
-  const [isSessionActive, setIsSessionActive] = useState(false)
+  const [isSessionActive, setIsSessionActive] = useState(true)
 
   return (
     <HomeContainer>
@@ -25,7 +25,7 @@ export default function Home() {
           </div>
 
           {isSessionActive && (
-            <>
+            <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>
                 <button>
@@ -41,7 +41,7 @@ export default function Home() {
                   rating={2}
                 />
               </CardsContainer>
-            </>
+            </Timeline>
           )}
 
           <Timeline>

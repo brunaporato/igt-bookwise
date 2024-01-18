@@ -18,7 +18,6 @@ export function BookCard({
   image,
   title,
   author,
-  date,
   description,
   rating,
   isReview = false,
