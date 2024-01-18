@@ -1,11 +1,12 @@
+import { Rating } from '../Rating'
 import { CardContainer, Content, TitleAuthor, TopSection } from './styles'
-import { Star } from '@phosphor-icons/react'
 
 interface BookCardProps {
   small?: boolean
   image: string
   title: string
   author: string
+  rating: number
   date?: string
   description?: string
 }
@@ -17,6 +18,7 @@ export function BookCard({
   author,
   date,
   description,
+  rating,
 }: BookCardProps) {
   console.log(image)
   return (
@@ -26,13 +28,7 @@ export function BookCard({
         <div className="date-rating">
           <TopSection>
             <span className="date">Hoje</span>
-            <div className="rating">
-              <Star weight="fill" />
-              <Star weight="fill" />
-              <Star />
-              <Star />
-              <Star />
-            </div>
+            <Rating rate={rating} />
           </TopSection>
           <TitleAuthor>
             <h1>{title}</h1>

@@ -74,12 +74,6 @@ export const TopSection = styled('section', {
     fontSize: '$sm',
     color: '$gray300',
   },
-
-  '> .rating': {
-    color: '$purple100',
-    display: 'flex',
-    gap: '$1',
-  },
 })
 
 export const TitleAuthor = styled('section', {
