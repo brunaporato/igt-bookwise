@@ -1,5 +1,4 @@
 import { styled } from '@/styles/stitches.config'
-import Image from 'next/image'
 
 export const Container = styled('nav', {
   background: '$gray700',
@@ -79,11 +78,6 @@ export const Profile = styled('div', {
   '> p': {
     fontSize: '$sm',
   },
-})
-
-export const ProfileIcon = styled(Image, {
-  borderRadius: '$full',
-  border: '1px solid #9694F5',
 })
 
 export const LogoutButton = styled('button', {

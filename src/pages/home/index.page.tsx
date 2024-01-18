@@ -55,6 +55,7 @@ export default function Home() {
                 image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
                 description="Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectu..."
                 rating={1}
+                isReview={true}
               />
               <BookCard
                 title="O Hobbit"
@@ -62,6 +63,7 @@ export default function Home() {
                 image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
                 description="Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh..."
                 rating={2}
+                isReview={true}
               />
             </CardsContainer>
           </Timeline>

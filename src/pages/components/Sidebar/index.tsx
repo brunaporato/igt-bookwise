@@ -1,15 +1,9 @@
 import Image from 'next/image'
-import {
-  Container,
-  LogoutButton,
-  Menu,
-  MenuButton,
-  Profile,
-  ProfileIcon,
-} from './styles'
+import { Container, LogoutButton, Menu, MenuButton, Profile } from './styles'
 import { Binoculars, ChartLineUp, SignOut, User } from '@phosphor-icons/react'
 
 import Logo from '../../../public/icons/logo.svg'
+import { Avatar } from '../Avatar'
 
 export function Sidebar() {
   return (
@@ -38,12 +32,7 @@ export function Sidebar() {
         </Menu>
       </section>
       <Profile>
-        <ProfileIcon
-          src="https://github.com/brunaporato.png"
-          alt=""
-          width={32}
-          height={32}
-        />
+        <Avatar avatar="https://github.com/brunaporato.png" />
         <p>Bruna Porato</p>
         <LogoutButton>
           <SignOut size={20} />

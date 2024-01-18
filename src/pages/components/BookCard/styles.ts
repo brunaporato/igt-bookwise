@@ -17,6 +17,10 @@ export const CardContainer = styled('div', {
     transition: 'all .3s',
   },
 
+  '> img': {
+    gridArea: 'cover',
+  },
+
   variants: {
     isSmall: {
       true: {
@@ -29,6 +33,41 @@ export const CardContainer = styled('div', {
         },
       },
     },
+    isReview: {
+      true: {
+        background: '$gray700',
+
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+        gridTemplateColumns: '108px 1fr',
+
+        gridTemplateAreas: `
+          "profileInfo profileInfo profileInfo"
+          "cover bookInfo bookInfo"
+        `,
+
+        gridColumnGap: '$5',
+        gridRowGap: '$8',
+
+        '> .top-review': {
+          gridArea: 'profileInfo',
+
+          display: 'flex',
+          justifyContent: 'space-between',
+
+          '> .profile-info': {
+            display: 'flex',
+            gap: '$4',
+            alignItems: 'center',
+
+            span: {
+              fontSize: '$sm',
+              color: '$gray400',
+            },
+          },
+        },
+      },
+    },
   },
 })
 
@@ -36,6 +75,7 @@ export const Content = styled('main', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  gridArea: 'bookInfo',
 
   '> .description': {
     fontSize: '$sm',
@@ -46,7 +86,7 @@ export const Content = styled('main', {
   variants: {
     isSmall: {
       true: {
-        '> .date-rating': {
+        '> .top-content': {
           display: 'flex',
           flexDirection: 'column-reverse',
           justifyContent: 'space-between',
@@ -73,6 +113,14 @@ export const TopSection = styled('section', {
   '> span': {
     fontSize: '$sm',
     color: '$gray300',
+  },
+
+  variants: {
+    isReview: {
+      true: {
+        display: 'none',
+      },
+    },
   },
 })
 

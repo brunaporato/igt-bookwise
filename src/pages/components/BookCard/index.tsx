@@ -1,3 +1,4 @@
+import { Avatar } from '../Avatar'
 import { Rating } from '../Rating'
 import { CardContainer, Content, TitleAuthor, TopSection } from './styles'
 
@@ -9,6 +10,7 @@ interface BookCardProps {
   rating: number
   date?: string
   description?: string
+  isReview?: boolean
 }
 
 export function BookCard({
@@ -19,14 +21,26 @@ export function BookCard({
   date,
   description,
   rating,
+  isReview = false,
 }: BookCardProps) {
-  console.log(image)
   return (
-    <CardContainer isSmall={small}>
+    <CardContainer isSmall={small} isReview={isReview}>
+      {isReview && (
+        <div className="top-review">
+          <div className="profile-info">
+            <Avatar avatar="https://github.com/brunaporato.png" isCard />
+            <div>
+              <p>Bruna Porato</p>
+              <span>Hoje</span>
+            </div>
+          </div>
+          <Rating rate={3} />
+        </div>
+      )}
       <img src={image} alt="" width={108} height={152} />
       <Content isSmall={small}>
-        <div className="date-rating">
-          <TopSection>
+        <div className="top-content">
+          <TopSection isReview={isReview}>
             <span className="date">Hoje</span>
             <Rating rate={rating} />
           </TopSection>
