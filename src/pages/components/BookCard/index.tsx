@@ -27,7 +27,10 @@ export function BookCard({
       {isReview && (
         <div className="top-review">
           <div className="profile-info">
-            <Avatar avatar="https://github.com/brunaporato.png" isCard />
+            <Avatar
+              avatar="https://github.com/brunaporato.png"
+              variant="card"
+            />
             <div>
               <p>Bruna Porato</p>
               <span>Hoje</span>
