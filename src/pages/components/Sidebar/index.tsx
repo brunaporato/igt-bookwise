@@ -10,7 +10,7 @@ import {
 
 import Logo from '../../../public/icons/logo.svg'
 import { Avatar } from '../Avatar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 interface SidebarProps {
@@ -23,18 +23,19 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
 
   function handleClickHome() {
     router.push('/home')
-    setActivePage('home')
   }
 
   function handleClickExplore() {
     router.push('/explore')
-    setActivePage('explore')
   }
 
   function handleClickProfile() {
     router.push('/profile')
-    setActivePage('profile')
   }
+
+  useEffect(() => {
+    setActivePage(router.pathname.substring(1))
+  }, [router.pathname])
 
   return (
     <Container>
