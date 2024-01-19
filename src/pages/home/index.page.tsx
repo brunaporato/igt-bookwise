@@ -5,6 +5,7 @@ import {
   CardsContainer,
   HomeContainer,
   HomeContent,
+  PageTitle,
   PopularBooks,
   Timeline,
   TopSubtitle,
@@ -19,10 +20,10 @@ export default function Home() {
       <Sidebar isSessionActive={isSessionActive} />
       <HomeContent>
         <div className="timeline">
-          <div className="title">
+          <PageTitle>
             <ChartLineUp size={32} className="icon" weight="bold" />
-            <h1>Início</h1>
-          </div>
+            <h1>Home</h1>
+          </PageTitle>
 
           {isSessionActive && (
             <Timeline>

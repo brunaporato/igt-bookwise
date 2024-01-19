@@ -31,6 +31,19 @@ export const HomeContent = styled('main', {
   },
 })
 
+export const PageTitle = styled('div', {
+  display: 'flex',
+  gap: '$3',
+  svg: {
+    color: '$green100',
+  },
+
+  h1: {
+    fontSize: '$2xl',
+    lineHeight: 1.4,
+  },
+})
+
 export const Timeline = styled('div', {
   display: 'flex',
   flexDirection: 'column',
