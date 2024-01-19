@@ -2,16 +2,17 @@ import { AvatarContainer } from './styles'
 
 interface AvatarProps {
   avatar: string
-  isCard?: boolean
+  variant?: 'card' | 'profile'
 }
 
-export function Avatar({ avatar, isCard }: AvatarProps) {
+export function Avatar({ avatar, variant }: AvatarProps) {
   return (
     <AvatarContainer
       src={avatar}
       alt=""
-      width={isCard ? 40 : 32}
-      height={isCard ? 40 : 32}
+      width={32}
+      height={32}
+      variant={variant}
     />
   )
 }
