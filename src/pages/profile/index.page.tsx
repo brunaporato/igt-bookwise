@@ -1,14 +1,33 @@
 import { Sidebar } from '../components/Sidebar'
-import { ProfileContainer, ProfileInfos, ProfilePageContent } from './styles'
+import {
+  PageTitle,
+  ProfileBox,
+  ProfileContainer,
+  ProfileData,
+  ProfileDataItem,
+  ProfileInfos,
+  ProfilePageContent,
+} from './styles'
 import { Avatar } from '../components/Avatar'
 import { SearchInput } from '../components/SearchInput'
 import { ProfileReview } from './components/ProfileReview'
+import {
+  BookOpen,
+  BookmarkSimple,
+  Books,
+  User,
+  UserList,
+} from '@phosphor-icons/react'
 
 export default function Profile() {
   return (
     <ProfileContainer>
       <Sidebar isSessionActive />
       <ProfilePageContent>
+        <PageTitle>
+          <User size={32} />
+          <h1>Profile</h1>
+        </PageTitle>
         <SearchInput placeholder="Search reviews" />
         <div className="reviews">
           <div className="post">
@@ -24,11 +43,49 @@ Proin sed proin at leo quis ac sem. Nam donec accumsan curabitur amet tortor qua
           </div>
         </div>
       </ProfilePageContent>
-      <ProfileInfos>
-        <Avatar avatar="https://github.com/brunaporato.png" />
-        <h2>Bruna Porato</h2>
-        <span>Member since 2019</span>
-      </ProfileInfos>
+      <ProfileBox>
+        <ProfileInfos>
+          <Avatar
+            avatar="https://github.com/brunaporato.png"
+            variant="profile"
+          />
+          <div>
+            <h2>Bruna Porato</h2>
+            <span>Member since 2019</span>
+          </div>
+        </ProfileInfos>
+        <div className="decoration"></div>
+        <ProfileData>
+          <ProfileDataItem>
+            <BookOpen size={32} />
+            <div>
+              <p>3853</p>
+              <span>Pages read</span>
+            </div>
+          </ProfileDataItem>
+          <ProfileDataItem>
+            <Books size={32} />
+            <div>
+              <p>10</p>
+              <span>Books rated</span>
+            </div>
+          </ProfileDataItem>
+          <ProfileDataItem>
+            <UserList size={32} />
+            <div>
+              <p>8</p>
+              <span>Authors read</span>
+            </div>
+          </ProfileDataItem>
+          <ProfileDataItem>
+            <BookmarkSimple size={32} />
+            <div>
+              <p>Computer Science</p>
+              <span>Most read category</span>
+            </div>
+          </ProfileDataItem>
+        </ProfileData>
+      </ProfileBox>
     </ProfileContainer>
   )
 }
