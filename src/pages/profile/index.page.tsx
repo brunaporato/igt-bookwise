@@ -1,8 +1,8 @@
-import { BookCard } from '../components/BookCard'
 import { Sidebar } from '../components/Sidebar'
 import { ProfileContainer, ProfileInfos, ProfilePageContent } from './styles'
 import { Avatar } from '../components/Avatar'
 import { SearchInput } from '../components/SearchInput'
+import { ProfileReview } from './components/ProfileReview'
 
 export default function Profile() {
   return (
@@ -13,7 +13,7 @@ export default function Profile() {
         <div className="reviews">
           <div className="post">
             <span>2 days ago</span>
-            <BookCard
+            <ProfileReview
               image={'https://m.media-amazon.com/images/I/519UnakaarL.jpg'}
               title={'Entendendo Algoritmos'}
               author={'Aditya Bhargava'}
