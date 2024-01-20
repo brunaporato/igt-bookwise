@@ -68,6 +68,16 @@ export const CardContainer = styled('div', {
         },
       },
     },
+    isOnExplore: {
+      true: {
+        background: '$gray700',
+
+        '> img': {
+          width: 108,
+          height: 152,
+        },
+      },
+    },
   },
 })
 
@@ -85,6 +95,24 @@ export const Content = styled('main', {
 
   variants: {
     isSmall: {
+      true: {
+        '> .top-content': {
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          justifyContent: 'space-between',
+          height: 'stretch',
+
+          '.date': {
+            display: 'none',
+          },
+
+          section: {
+            margin: 0,
+          },
+        },
+      },
+    },
+    isOnExplore: {
       true: {
         '> .top-content': {
           display: 'flex',

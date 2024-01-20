@@ -11,6 +11,7 @@ interface BookCardProps {
   date?: string
   description?: string
   isReview?: boolean
+  explore?: boolean
 }
 
 export function BookCard({
@@ -21,9 +22,10 @@ export function BookCard({
   description,
   rating,
   isReview = false,
+  explore = false,
 }: BookCardProps) {
   return (
-    <CardContainer isSmall={small} isReview={isReview}>
+    <CardContainer isSmall={small} isReview={isReview} isOnExplore={explore}>
       {isReview && (
         <div className="top-review">
           <div className="profile-info">
@@ -40,7 +42,7 @@ export function BookCard({
         </div>
       )}
       <img src={image} alt="" width={108} height={152} />
-      <Content isSmall={small}>
+      <Content isSmall={small} isOnExplore={explore}>
         <div className="top-content">
           <TopSection isReview={isReview}>
             <span className="date">Hoje</span>
