@@ -74,7 +74,10 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
       <Profile>
         {isSessionActive ? (
           <>
-            <Avatar avatar="https://github.com/brunaporato.png" />
+            <Avatar
+              avatar="https://github.com/brunaporato.png"
+              onClick={handleClickProfile}
+            />
             <p>Bruna Porato</p>
             <SidebarButton>
               <SignOut size={20} />
