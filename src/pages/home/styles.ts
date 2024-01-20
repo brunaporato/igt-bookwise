@@ -2,7 +2,7 @@ import { styled } from '@/styles/stitches.config'
 
 export const HomeContainer = styled('div', {
   width: '100%',
-  padding: '$5',
+  padding: '$5 6rem $5 $5',
 
   display: 'flex',
   gap: '6rem',

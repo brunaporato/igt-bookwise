@@ -1,7 +1,7 @@
 import { styled } from '@/styles/stitches.config'
 
 export const ProfileContainer = styled('div', {
-  padding: '$5',
+  padding: '$5 6rem $5 $5',
   display: 'flex',
   justifyContent: 'space-between',
   gap: '4rem',
