@@ -9,6 +9,7 @@ import {
   PageTitle,
 } from './styles'
 import { Tag } from './components/Tag'
+import { BookCardModal } from './components/BookCardModal'
 
 export default function Explore() {
   return (
@@ -29,12 +30,14 @@ export default function Explore() {
           <Tag>Fantasy</Tag>
         </div>
         <ExploreBooksGrid>
-          <BookCard
-            explore={true}
+          <BookCardModal
             title="Entendendo Algoritmos"
             author="Adjia Galine"
             image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
             rating={3}
+            description=""
+            category="Computer Science"
+            pages={120}
           />
           <BookCard
             explore={true}
