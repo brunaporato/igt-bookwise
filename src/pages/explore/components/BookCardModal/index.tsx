@@ -12,6 +12,7 @@ import {
 import { Rating } from '@/pages/components/Rating'
 import { BookOpen, BookmarkSimple, X } from '@phosphor-icons/react'
 import { Review } from '../Review'
+import { LoginModal } from '../LoginModal'
 
 interface BookCardModalProps {
   title: string
@@ -31,6 +32,8 @@ export function BookCardModal({
   category,
   pages,
 }: BookCardModalProps) {
+  const isUserLogged = false
+
   return (
     <BookCardModalContainer>
       <Dialog.Root>
@@ -85,7 +88,7 @@ export function BookCardModal({
             <CommentsBox>
               <div className="title">
                 <h2>Reviews</h2>
-                <a href="#">Add review</a>
+                {isUserLogged ? <a href="#">Add review</a> : <LoginModal />}
               </div>
               <div className="list">
                 <Review />
