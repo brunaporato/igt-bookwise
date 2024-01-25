@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 
 export default function Home() {
-  const [isSessionActive, setIsSessionActive] = useState(true)
+  const [isSessionActive, setIsSessionActive] = useState(false)
 
   return (
     <HomeContainer>

@@ -21,16 +21,12 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
   const [activePage, setActivePage] = useState('home')
   const router = useRouter()
 
-  function handleClickHome() {
-    router.push('/home')
+  function handleClickMenu(page: string) {
+    router.push(`/${page}`)
   }
 
-  function handleClickExplore() {
-    router.push('/explore')
-  }
-
-  function handleClickProfile() {
-    router.push('/profile')
+  function handleGuestSignIn() {
+    router.push('/')
   }
 
   useEffect(() => {
@@ -45,7 +41,7 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
           <li>
             <MenuButton
               selected={activePage === 'home'}
-              onClick={handleClickHome}
+              onClick={() => handleClickMenu('home')}
             >
               <ChartLineUp size={24} />
               <span>Home</span>
@@ -54,7 +50,7 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
           <li>
             <MenuButton
               selected={activePage === 'explore'}
-              onClick={handleClickExplore}
+              onClick={() => handleClickMenu('explore')}
             >
               <Binoculars size={24} />
               <span>Explore</span>
@@ -63,7 +59,7 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
           <li>
             <MenuButton
               selected={activePage === 'profile'}
-              onClick={handleClickProfile}
+              onClick={() => handleClickMenu('profile')}
             >
               <User size={24} />
               <span>Profile</span>
@@ -76,7 +72,7 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
           <>
             <Avatar
               avatar="https://github.com/brunaporato.png"
-              onClick={handleClickProfile}
+              onClick={() => handleClickMenu('profile')}
             />
             <p>Bruna Porato</p>
             <SidebarButton>
@@ -86,7 +82,7 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
         ) : (
           <>
             <p>Sign In</p>
-            <SidebarButton userState="guest">
+            <SidebarButton userState="guest" onClick={handleGuestSignIn}>
               <SignIn size={20} />
             </SidebarButton>
           </>

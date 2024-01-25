@@ -12,8 +12,15 @@ import Logo from '../../public/icons/logo.svg'
 import Google from '../../public/icons/google-logo.svg'
 import Github from '../../public/icons/github-logo.svg'
 import Guest from '../../public/icons/rocket.svg'
+import { useRouter } from 'next/router'
 
 export default function Login() {
+  const router = useRouter()
+
+  function handleLoginAsGuest() {
+    router.push('/home')
+  }
+
   return (
     <Container>
       <SideImage>
@@ -39,9 +46,9 @@ export default function Login() {
               <Image src={Github} alt="Github's Logo" />
               Login with Github
             </SocialLogin>
-            <SocialLogin>
+            <SocialLogin onClick={handleLoginAsGuest}>
               <Image src={Guest} alt="Icon of a rocket" />
-              Enter as guest
+              Login as guest
             </SocialLogin>
           </div>
         </div>

@@ -66,9 +66,7 @@ export const PopularBooks = styled('section', {
   flexDirection: 'column',
   gap: '$4',
 
-  marginTop: '5.875rem',
-
-  '> .top': {},
+  marginTop: '4rem',
 })
 
 export const TopSubtitle = styled('div', {
