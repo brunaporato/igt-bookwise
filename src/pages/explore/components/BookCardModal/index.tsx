@@ -8,11 +8,16 @@ import {
   DialogClose,
   DialogOverlay,
   MoreInfoItem,
+  ReviewButton,
+  ReviewInputBox,
 } from './styles'
 import { Rating } from '@/pages/components/Rating'
-import { BookOpen, BookmarkSimple, X } from '@phosphor-icons/react'
+import { BookOpen, BookmarkSimple, Check, X } from '@phosphor-icons/react'
 import { Review } from '../Review'
 import { LoginModal } from '../LoginModal'
+import { useState } from 'react'
+import { Avatar } from '@/pages/components/Avatar'
+import { RatingInput } from '../RatingInput'
 
 interface BookCardModalProps {
   title: string
@@ -32,7 +37,17 @@ export function BookCardModal({
   category,
   pages,
 }: BookCardModalProps) {
+  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false)
+  const [userRating, setUserRating] = useState(0)
   const isUserLogged = false
+
+  function handleCloseCommentBox() {
+    setIsCommentBoxOpen(false)
+  }
+
+  function handleOpenCommentBox() {
+    setIsCommentBoxOpen(true)
+  }
 
   return (
     <BookCardModalContainer>
@@ -88,8 +103,45 @@ export function BookCardModal({
             <CommentsBox>
               <div className="title">
                 <h2>Reviews</h2>
-                {isUserLogged ? <a href="#">Add review</a> : <LoginModal />}
+                {isUserLogged ? (
+                  <button
+                    className={isCommentBoxOpen ? 'no-display' : ''}
+                    onClick={handleOpenCommentBox}
+                  >
+                    Add review
+                  </button>
+                ) : (
+                  <LoginModal />
+                )}
               </div>
+              {isCommentBoxOpen && isUserLogged && (
+                <ReviewInputBox>
+                  <div className="top">
+                    <div className="user-info">
+                      <Avatar
+                        avatar="https://github.com/brunaporato.png"
+                        variant="card"
+                      />
+                      Cristofer Rosser
+                    </div>
+                    <RatingInput
+                      onRateChange={(newRate) => setUserRating(newRate)}
+                    />
+                  </div>
+                  <textarea placeholder="Write your review" />
+                  <div className="buttons">
+                    <ReviewButton variant="green">
+                      <Check size={24} />
+                    </ReviewButton>
+                    <ReviewButton
+                      variant="purple"
+                      onClick={handleCloseCommentBox}
+                    >
+                      <X size={24} />
+                    </ReviewButton>
+                  </div>
+                </ReviewInputBox>
+              )}
               <div className="list">
                 <Review />
               </div>

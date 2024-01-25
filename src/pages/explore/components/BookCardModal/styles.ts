@@ -28,6 +28,20 @@ export const DialogBox = styled(Dialog.Content, {
   zIndex: 2,
   top: 0,
   right: 0,
+
+  overflow: 'auto',
+
+  '&::-webkit-scrollbar': {
+    width: 6,
+    margin: 10,
+  },
+
+  '&::-webkit-scrollbar-thumb': {
+    flexShrink: 0,
+    borderRadius: '$full',
+    padding: 8,
+    background: '$gray700',
+  },
 })
 
 export const DialogClose = styled(Dialog.Close, {
@@ -141,5 +155,106 @@ export const CommentsBox = styled('div', {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+
+    h2: {
+      fontSize: '$sm',
+      fontWeight: 400,
+      lineHeight: 1.6,
+      color: '$gray200',
+    },
+
+    button: {
+      all: 'unset',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 4,
+      padding: '$2',
+      lineHeight: 1.6,
+      fontWeight: 700,
+
+      fontFamily: '$default',
+      color: '$purple100',
+
+      cursor: 'pointer',
+
+      '&:hover': {
+        background: '$gray700',
+      },
+    },
+
+    '.no-display': {
+      display: 'none',
+    },
+  },
+})
+
+export const ReviewInputBox = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '$6',
+  alignSelf: 'stretch',
+  gap: '$6',
+
+  borderRadius: 8,
+  background: '$gray700',
+
+  '.top': {
+    display: 'flex',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+
+    '.user-info': {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '$4',
+
+      fontWeight: 700,
+      lineHeight: 1.4,
+    },
+  },
+
+  textarea: {
+    padding: '$3 $5',
+    borderRadius: '$sm',
+    border: '1px solid $gray500',
+    background: '$gray800',
+    height: 164,
+    color: '$gray400',
+    fontSize: '$sm',
+    resize: 'vertical',
+  },
+
+  '.buttons': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '$2',
+    flexDirection: 'row-reverse',
+
+    marginTop: '-12px',
+  },
+})
+
+export const ReviewButton = styled('button', {
+  all: 'unset',
+  padding: '$2',
+  display: 'flex',
+  alignItems: 'center',
+
+  borderRadius: 4,
+  background: '$gray600',
+
+  cursor: 'pointer',
+
+  '&:hover': {
+    background: '$gray500',
+    transition: 'all .3s',
+  },
+
+  variants: {
+    variant: {
+      purple: { color: '$purple100' },
+      green: { color: '$green100' },
+    },
   },
 })
