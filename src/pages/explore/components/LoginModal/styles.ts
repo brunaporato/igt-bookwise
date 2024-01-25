@@ -77,8 +77,8 @@ export const IconButton = styled('button', {
   justifyContent: 'center',
   color: '$gray400',
   position: 'absolute',
-  top: 16,
-  right: 16,
+  top: 24,
+  right: 24,
 
   cursor: 'pointer',
 
