@@ -76,3 +76,9 @@ export const SocialLogin = styled('button', {
     transition: 'filter 0.3s ease',
   },
 })
+
+export const AuthError = styled('p', {
+  color: '#f75a68',
+  marginBottom: '$3',
+  fontSize: '$sm',
+})

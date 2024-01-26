@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import {
+  AuthError,
   Container,
   LoginContainer,
   SideImage,
@@ -13,12 +14,19 @@ import Google from '../../public/icons/google-logo.svg'
 import Github from '../../public/icons/github-logo.svg'
 import Guest from '../../public/icons/rocket.svg'
 import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 
 export default function Login() {
   const router = useRouter()
 
+  const hasAuthError = !!router.query.error
+
   function handleLoginAsGuest() {
     router.push('/home')
+  }
+
+  async function handleSocialLogin(provider: 'github' | 'google') {
+    await signIn(provider)
   }
 
   return (
@@ -37,12 +45,15 @@ export default function Login() {
             <h1>Welcome to BookWise</h1>
             <span>Login into your account or enter as guest</span>
           </WelcomeText>
+          {hasAuthError && (
+            <AuthError>Falha ao logar, tente novamente.</AuthError>
+          )}
           <div className="buttons">
-            <SocialLogin>
+            <SocialLogin onClick={() => handleSocialLogin('google')}>
               <Image src={Google} alt="Google's Logo" />
               Login with Google
             </SocialLogin>
-            <SocialLogin>
+            <SocialLogin onClick={() => handleSocialLogin('github')}>
               <Image src={Github} alt="Github's Logo" />
               Login with Github
             </SocialLogin>
