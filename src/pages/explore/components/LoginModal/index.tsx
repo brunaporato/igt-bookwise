@@ -11,8 +11,13 @@ import { X } from '@phosphor-icons/react'
 import Google from '../../../../public/icons/google-logo.svg'
 import Github from '../../../../public/icons/github-logo.svg'
 import Image from 'next/image'
+import { signIn } from 'next-auth/react'
 
 export function LoginModal() {
+  async function handleSocialLogin(provider: 'github' | 'google') {
+    await signIn(provider)
+  }
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -23,11 +28,19 @@ export function LoginModal() {
         <DialogContent>
           <DialogTitle>Login to review this book</DialogTitle>
           <div className="buttons">
-            <LoginButton>
+            <LoginButton
+              onClick={() => {
+                handleSocialLogin('google')
+              }}
+            >
               <Image src={Google} alt="" width={32} />
               Login with Google
             </LoginButton>
-            <LoginButton>
+            <LoginButton
+              onClick={() => {
+                handleSocialLogin('github')
+              }}
+            >
               <Image src={Github} alt="" width={32} />
               Login with Github
             </LoginButton>
