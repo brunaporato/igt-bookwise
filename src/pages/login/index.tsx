@@ -21,11 +21,11 @@ export default function Login() {
 
   const hasAuthError = !!router.query.error
 
-  function handleLoginAsGuest() {
-    router.push('/home')
-  }
+  async function handleSocialLogin(provider: 'github' | 'google' | 'guest') {
+    if (provider === 'guest') {
+      return router.push('/home')
+    }
 
-  async function handleSocialLogin(provider: 'github' | 'google') {
     await signIn(provider)
   }
 
@@ -57,7 +57,7 @@ export default function Login() {
               <Image src={Github} alt="Github's Logo" />
               Login with Github
             </SocialLogin>
-            <SocialLogin onClick={handleLoginAsGuest}>
+            <SocialLogin onClick={() => handleSocialLogin('guest')}>
               <Image src={Guest} alt="Icon of a rocket" />
               Login as guest
             </SocialLogin>

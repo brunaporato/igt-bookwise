@@ -12,21 +12,26 @@ import Logo from '../../../public/icons/logo.svg'
 import { Avatar } from '../Avatar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useSession, signOut } from 'next-auth/react'
 
-interface SidebarProps {
-  isSessionActive: boolean
-}
-
-export function Sidebar({ isSessionActive }: SidebarProps) {
+export function Sidebar() {
   const [activePage, setActivePage] = useState('home')
   const router = useRouter()
+
+  const { data: session } = useSession()
+  const user = session?.user
 
   function handleClickMenu(page: string) {
     router.push(`/${page}`)
   }
 
-  function handleGuestSignIn() {
+  function handleReturnToLogin() {
     router.push('/')
+  }
+
+  async function handleSignOut() {
+    await signOut()
+    handleReturnToLogin()
   }
 
   useEffect(() => {
@@ -68,21 +73,21 @@ export function Sidebar({ isSessionActive }: SidebarProps) {
         </Menu>
       </section>
       <Profile>
-        {isSessionActive ? (
+        {user ? (
           <>
             <Avatar
-              avatar="https://github.com/brunaporato.png"
+              avatar={String(user.image)}
               onClick={() => handleClickMenu('profile')}
             />
-            <p>Bruna Porato</p>
-            <SidebarButton>
+            <p>{user.name}</p>
+            <SidebarButton onClick={handleSignOut}>
               <SignOut size={20} />
             </SidebarButton>
           </>
         ) : (
           <>
             <p>Sign In</p>
-            <SidebarButton userState="guest" onClick={handleGuestSignIn}>
+            <SidebarButton userState="guest" onClick={handleReturnToLogin}>
               <SignIn size={20} />
             </SidebarButton>
           </>

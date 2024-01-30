@@ -1,5 +1,4 @@
 import { CaretRight, ChartLineUp } from '@phosphor-icons/react'
-import { BookCard } from '../components/BookCard'
 import { Sidebar } from '../components/Sidebar'
 import {
   CardsContainer,
@@ -37,7 +36,7 @@ export default function Home() {
             <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>
-                <button>
+                <button onClick={handleSeeMoreBooks}>
                   See more <CaretRight weight="bold" />
                 </button>
               </TopSubtitle>
