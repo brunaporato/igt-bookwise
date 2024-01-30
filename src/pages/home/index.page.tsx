@@ -11,9 +11,17 @@ import {
   TopSubtitle,
 } from './styles'
 import { useState } from 'react'
+import { BookCardModal } from '../components/BookCardModal'
+import { useRouter } from 'next/router'
 
 export default function Home() {
-  const [isSessionActive, setIsSessionActive] = useState(false)
+  const [isSessionActive, setIsSessionActive] = useState(true)
+
+  const router = useRouter()
+
+  async function handleSeeMoreBooks() {
+    router.push('/explore')
+  }
 
   return (
     <HomeContainer>
@@ -34,7 +42,7 @@ export default function Home() {
                 </button>
               </TopSubtitle>
               <CardsContainer>
-                <BookCard
+                <BookCardModal
                   title="O Hobbit"
                   author="J.R.R. Tolkien"
                   image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
@@ -50,7 +58,7 @@ export default function Home() {
               <p>Most recent ratings</p>
             </TopSubtitle>
             <CardsContainer>
-              <BookCard
+              <BookCardModal
                 title="Entendendo Algoritmos"
                 author="Adjia Galine"
                 image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
@@ -58,7 +66,7 @@ export default function Home() {
                 rating={1}
                 isReview={true}
               />
-              <BookCard
+              <BookCardModal
                 title="O Hobbit"
                 author="J.R.R. Tolkien"
                 image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
@@ -73,19 +81,19 @@ export default function Home() {
         <PopularBooks>
           <TopSubtitle>
             <p>Popular Books</p>
-            <button>
+            <button onClick={handleSeeMoreBooks}>
               See more <CaretRight weight="bold" />
             </button>
           </TopSubtitle>
           <CardsContainer>
-            <BookCard
+            <BookCardModal
               small={true}
               title="Entendendo Algoritmos"
               author="Adjia Galine"
               image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
               rating={3}
             />
-            <BookCard
+            <BookCardModal
               small={true}
               title="O Hobbit"
               author="J.R.R. Tolkien"

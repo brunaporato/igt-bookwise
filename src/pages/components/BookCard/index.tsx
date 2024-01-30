@@ -3,13 +3,13 @@ import { Rating } from '../Rating'
 import { CardContainer, Content, TitleAuthor, TopSection } from './styles'
 
 interface BookCardProps {
-  small?: boolean
   image: string
   title: string
   author: string
   rating: number
   date?: string
   description?: string
+  small?: boolean
   isReview?: boolean
   explore?: boolean
 }

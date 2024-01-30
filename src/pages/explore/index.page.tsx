@@ -9,7 +9,7 @@ import {
   PageTitle,
 } from './styles'
 import { Tag } from './components/Tag'
-import { BookCardModal } from './components/BookCardModal'
+import { BookCardModal } from '../components/BookCardModal'
 
 export default function Explore() {
   return (
@@ -38,6 +38,7 @@ export default function Explore() {
             description=""
             category="Computer Science"
             pages={120}
+            explore={true}
           />
           <BookCard
             explore={true}
