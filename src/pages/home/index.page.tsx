@@ -9,14 +9,14 @@ import {
   Timeline,
   TopSubtitle,
 } from './styles'
-import { useState } from 'react'
 import { BookCardModal } from '../components/BookCardModal'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
 export default function Home() {
-  const [isSessionActive, setIsSessionActive] = useState(true)
-
   const router = useRouter()
+  const { data: session } = useSession()
+  const user = session?.user
 
   async function handleSeeMoreBooks() {
     router.push('/explore')
@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <Sidebar isSessionActive={isSessionActive} />
+      <Sidebar />
       <HomeContent>
         <div className="timeline">
           <PageTitle>
@@ -32,7 +32,7 @@ export default function Home() {
             <h1>Home</h1>
           </PageTitle>
 
-          {isSessionActive && (
+          {!!user && (
             <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>

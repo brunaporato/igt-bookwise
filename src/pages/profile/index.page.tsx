@@ -18,11 +18,46 @@ import {
   User,
   UserList,
 } from '@phosphor-icons/react'
+import { useSession } from 'next-auth/react'
+import { api } from '@/lib/axios'
+import { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
+
+interface UserData {
+  id: string
+  email: string
+  created_at: Date
+  name: string
+  image: string
+}
 
 export default function Profile() {
+  const { data: session } = useSession()
+  const [user, setUser] = useState<UserData>()
+
+  const memberJoinYear = user && dayjs(user.created_at).year()
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await api.get(
+          `/users?userEmail=${session?.user?.email}`,
+        )
+        const userData = data.user
+        setUser(userData)
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      }
+    }
+
+    if (session) {
+      fetchData()
+    }
+  }, [session])
+
   return (
     <ProfileContainer>
-      <Sidebar isSessionActive />
+      <Sidebar />
       <ProfilePageContent>
         <PageTitle>
           <User size={32} />
@@ -45,13 +80,10 @@ Proin sed proin at leo quis ac sem. Nam donec accumsan curabitur amet tortor qua
       </ProfilePageContent>
       <ProfileBox>
         <ProfileInfos>
-          <Avatar
-            avatar="https://github.com/brunaporato.png"
-            variant="profile"
-          />
+          <Avatar avatar={String(user?.image)} variant="profile" />
           <div>
-            <h2>Bruna Porato</h2>
-            <span>Member since 2019</span>
+            <h2>{user?.name}</h2>
+            <span>Member since {memberJoinYear}</span>
           </div>
         </ProfileInfos>
         <div className="decoration"></div>

@@ -14,7 +14,7 @@ import { BookCardModal } from '../components/BookCardModal'
 export default function Explore() {
   return (
     <ExploreContainer>
-      <Sidebar isSessionActive />
+      <Sidebar />
       <ExploreContent>
         <div className="top">
           <PageTitle>

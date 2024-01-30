@@ -1,19 +1,19 @@
 import { prisma } from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-// /api/users?userEmail=example@teste.com
+// /api/books?bookId=48b86ac2-014e-401d-bcbb-331ce5f4a457
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const userEmail = String(req.query.userEmail)
+  const bookId = String(req.query.bookId)
 
-  const user = await prisma.user.findUnique({
+  const book = await prisma.book.findUnique({
     where: {
-      email: userEmail,
+      id: bookId,
     },
   })
 
-  return res.json({ user })
+  return res.json({ book })
 }
