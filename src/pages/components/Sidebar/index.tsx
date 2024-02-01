@@ -35,8 +35,15 @@ export function Sidebar() {
   }
 
   useEffect(() => {
+    const currentPath = router.pathname
+    if (currentPath === '/profile/[userId]') {
+      const userId = router.query.userId
+      userId === 'me' && setActivePage('profile/me')
+      return
+    }
+
     setActivePage(router.pathname.substring(1))
-  }, [router.pathname])
+  }, [router.pathname, router.query.userId])
 
   return (
     <Container>
@@ -63,8 +70,8 @@ export function Sidebar() {
           </li>
           <li>
             <MenuButton
-              selected={activePage === 'profile'}
-              onClick={() => handleClickMenu('profile')}
+              selected={activePage === 'profile/me'}
+              onClick={() => handleClickMenu('profile/me')}
             >
               <User size={24} />
               <span>Profile</span>

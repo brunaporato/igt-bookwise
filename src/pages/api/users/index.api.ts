@@ -7,13 +7,31 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const userEmail = String(req.query.userEmail)
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail,
-    },
-  })
+  const { userEmail, userId } = req.query
 
-  return res.json({ user })
+  if (userEmail) {
+    const userByEmail = await prisma.user.findUnique({
+      where: {
+        email: String(userEmail),
+      },
+    })
+
+    return res.json({ user: userByEmail })
+  }
+
+  if (userId) {
+    const userById = await prisma.user.findUnique({
+      where: {
+        id: String(userId),
+      },
+    })
+
+    return res.json({ user: userById })
+  }
+
+  return res.status(400).json({ error: 'Invalid parameters' })
 }

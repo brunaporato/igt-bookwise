@@ -1,4 +1,4 @@
-import { Sidebar } from '../components/Sidebar'
+import { Sidebar } from '../../components/Sidebar'
 import {
   PageTitle,
   ProfileBox,
@@ -8,9 +8,9 @@ import {
   ProfileInfos,
   ProfilePageContent,
 } from './styles'
-import { Avatar } from '../components/Avatar'
-import { SearchInput } from '../components/SearchInput'
-import { ProfileReview } from './components/ProfileReview'
+import { Avatar } from '../../components/Avatar'
+import { SearchInput } from '../../components/SearchInput'
+import { ProfileReview } from '../components/ProfileReview'
 import {
   BookOpen,
   BookmarkSimple,
@@ -18,42 +18,54 @@ import {
   User,
   UserList,
 } from '@phosphor-icons/react'
-import { useSession } from 'next-auth/react'
 import { api } from '@/lib/axios'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
 interface UserData {
-  id: string
-  email: string
   created_at: Date
-  name: string
   image: string
+  name: string
+  id: string
 }
 
 export default function Profile() {
-  const { data: session } = useSession()
   const [user, setUser] = useState<UserData>()
+
+  const router = useRouter()
+  const { userId } = router.query
+
+  const { data: session } = useSession()
 
   const memberJoinYear = user && dayjs(user.created_at).year()
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const { data } = await api.get(
-          `/users?userEmail=${session?.user?.email}`,
-        )
-        const userData = data.user
-        setUser(userData)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
+      if (userId !== 'me') {
+        try {
+          const { data } = await api.get(`/users?userId=${userId}`)
+          const userData = data.user
+          setUser(userData)
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+        }
+      } else {
+        try {
+          const { data } = await api.get(
+            `/users?userEmail=${session?.user?.email}`,
+          )
+          const userData = data.user
+          setUser(userData)
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+        }
       }
     }
 
-    if (session) {
-      fetchData()
-    }
-  }, [session])
+    fetchData()
+  }, [session?.user?.email, userId])
 
   return (
     <ProfileContainer>
