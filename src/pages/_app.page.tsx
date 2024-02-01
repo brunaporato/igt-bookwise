@@ -1,9 +1,10 @@
 import { globalStyles } from '@/styles/global'
 import { AppProps } from 'next/app'
-import { Nunito } from 'next/font/google'
+// eslint-disable-next-line camelcase
+import { Nunito_Sans } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 
-export const nunito = Nunito({
+export const nunito = Nunito_Sans({
   subsets: ['latin'],
 })
 

@@ -7,6 +7,7 @@ import {
   ProfileDataItem,
   ProfileInfos,
   ProfilePageContent,
+  ReturnPage,
 } from './styles'
 import { Avatar } from '../../components/Avatar'
 import { SearchInput } from '../../components/SearchInput'
@@ -23,6 +24,7 @@ import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { CaretLeft } from '@phosphor-icons/react/dist/ssr'
 
 interface UserData {
   created_at: Date
@@ -40,6 +42,10 @@ export default function Profile() {
   const { data: session } = useSession()
 
   const memberJoinYear = user && dayjs(user.created_at).year()
+
+  function handleReturnPage() {
+    router.back()
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -71,10 +77,18 @@ export default function Profile() {
     <ProfileContainer>
       <Sidebar />
       <ProfilePageContent>
-        <PageTitle>
-          <User size={32} />
-          <h1>Profile</h1>
-        </PageTitle>
+        {userId === 'me' ? (
+          <PageTitle>
+            <User size={32} />
+            <h1>Profile</h1>
+          </PageTitle>
+        ) : (
+          <ReturnPage onClick={handleReturnPage}>
+            <CaretLeft weight="bold" size={20} />
+            Voltar
+          </ReturnPage>
+        )}
+
         <SearchInput placeholder="Search reviews" />
         <div className="reviews">
           <div className="post">

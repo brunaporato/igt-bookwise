@@ -114,3 +114,28 @@ export const ProfileDataItem = styled('div', {
     lineHeight: 1.6,
   },
 })
+
+export const ReturnPage = styled('button', {
+  width: 'fit-content',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '$2',
+  padding: '$2 $4',
+
+  fontWeight: '$bold',
+  lineHeight: 1.6,
+  color: '$gray200',
+  fontFamily: '$default',
+  fontSize: '1rem',
+
+  background: 'none',
+  border: 'none',
+  borderRadius: '$sm',
+
+  cursor: 'pointer',
+
+  '&:hover': {
+    background: '$gray700',
+  },
+})
