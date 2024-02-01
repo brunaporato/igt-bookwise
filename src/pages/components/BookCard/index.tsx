@@ -41,6 +41,8 @@ export function BookCard({
           <Rating rate={3} />
         </div>
       )}
+
+      {/* TODO: learn about why the images arent rendering */}
       <img src={image} alt="" width={108} height={152} />
       <Content isSmall={small} isOnExplore={explore}>
         <div className="top-content">

@@ -1,5 +1,4 @@
 import { Binoculars } from '@phosphor-icons/react'
-import { BookCard } from '../components/BookCard'
 import { SearchInput } from '../components/SearchInput'
 import { Sidebar } from '../components/Sidebar'
 import {
@@ -10,8 +9,36 @@ import {
 } from './styles'
 import { Tag } from './components/Tag'
 import { BookCardModal } from '../components/BookCardModal'
+import { api } from '@/lib/axios'
+import { useEffect, useState } from 'react'
+
+interface BookData {
+  author: string
+  cover_url: string
+  created_at: Date
+  id: string
+  name: string
+  summary: string
+  total_pages: number
+}
 
 export default function Explore() {
+  const [books, setBooks] = useState<BookData[]>()
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await api.get('/books')
+        const allBooks = data.books
+        setBooks(allBooks)
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  console.log(books)
   return (
     <ExploreContainer>
       <Sidebar />
@@ -30,65 +57,21 @@ export default function Explore() {
           <Tag>Fantasy</Tag>
         </div>
         <ExploreBooksGrid>
-          <BookCardModal
-            title="Entendendo Algoritmos"
-            author="Adjia Galine"
-            image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-            rating={3}
-            description=""
-            category="Computer Science"
-            pages={120}
-            explore={true}
-          />
-          <BookCard
-            explore={true}
-            title="O Hobbit"
-            author="J.R.R. Tolkien"
-            image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-            rating={5}
-          />
-          <BookCard
-            explore={true}
-            title="Entendendo Algoritmos"
-            author="Adjia Galine"
-            image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-            rating={3}
-          />
-          <BookCard
-            explore={true}
-            title="O Hobbit"
-            author="J.R.R. Tolkien"
-            image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-            rating={5}
-          />
-          <BookCard
-            explore={true}
-            title="Entendendo Algoritmos"
-            author="Adjia Galine"
-            image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-            rating={3}
-          />
-          <BookCard
-            explore={true}
-            title="O Hobbit"
-            author="J.R.R. Tolkien"
-            image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-            rating={5}
-          />
-          <BookCard
-            explore={true}
-            title="Entendendo Algoritmos"
-            author="Adjia Galine"
-            image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-            rating={3}
-          />
-          <BookCard
-            explore={true}
-            title="O Hobbit"
-            author="J.R.R. Tolkien"
-            image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-            rating={5}
-          />
+          {books &&
+            books.map((book) => {
+              return (
+                <BookCardModal
+                  key={`allBooks-${book.id}`}
+                  title={book.name}
+                  author={book.author}
+                  image={book.cover_url}
+                  rating={3}
+                  category="Computer Science"
+                  pages={book.total_pages}
+                  explore={true}
+                />
+              )
+            })}
         </ExploreBooksGrid>
       </ExploreContent>
     </ExploreContainer>
