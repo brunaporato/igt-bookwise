@@ -84,7 +84,7 @@ export function Sidebar() {
           <>
             <Avatar
               avatar={String(user.image)}
-              onClick={() => handleClickMenu('profile')}
+              onClick={() => handleClickMenu('profile/me')}
             />
             <p>{user.name}</p>
             <SidebarButton onClick={handleSignOut}>
