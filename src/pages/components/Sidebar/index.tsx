@@ -8,7 +8,7 @@ import {
   User,
 } from '@phosphor-icons/react'
 
-import Logo from '../../../public/icons/logo.svg'
+import Logo from '../../../../public/icons/logo.svg'
 import { Avatar } from '../Avatar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'

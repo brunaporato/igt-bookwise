@@ -8,11 +8,11 @@ import {
   WelcomeText,
 } from './styles'
 
-import HomeImage from '../../public/images/homeimage.png'
-import Logo from '../../public/icons/logo.svg'
-import Google from '../../public/icons/google-logo.svg'
-import Github from '../../public/icons/github-logo.svg'
-import Guest from '../../public/icons/rocket.svg'
+import HomeImage from '../../../public/images/homeimage.png'
+import Logo from '../../../public/icons/logo.svg'
+import Google from '../../../public/icons/google-logo.svg'
+import Github from '../../../public/icons/github-logo.svg'
+import Guest from '../../../public/icons/rocket.svg'
 import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 

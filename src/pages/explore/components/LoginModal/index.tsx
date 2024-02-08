@@ -8,8 +8,8 @@ import {
   LoginButton,
 } from './styles'
 import { X } from '@phosphor-icons/react'
-import Google from '../../../../public/icons/google-logo.svg'
-import Github from '../../../../public/icons/github-logo.svg'
+import Google from '../../../../../public/icons/google-logo.svg'
+import Github from '../../../../../public/icons/github-logo.svg'
 import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 
