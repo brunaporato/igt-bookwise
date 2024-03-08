@@ -10,9 +10,11 @@ import {
 import { Tag } from './components/Tag'
 import { BookCardModal } from '../components/BookCardModal'
 import { api } from '@/lib/axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Category } from '@prisma/client'
 
-interface BookData {
+export interface BookData {
   author: string
   cover_url: string
   created_at: Date
@@ -23,22 +25,32 @@ interface BookData {
 }
 
 export default function Explore() {
-  const [books, setBooks] = useState<BookData[]>()
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data } = await api.get('/books')
-        const allBooks = data.books
-        setBooks(allBooks)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-      }
-    }
-    fetchData()
-  }, [])
+  function handleSelectTag(tag: string | null) {
+    setSelectedTag(tag)
+  }
 
-  console.log(books)
+  const { data: categories } = useQuery<Category[]>({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data } = await api.get('/categories')
+      return data.categories ?? []
+    },
+  })
+
+  const { data: books } = useQuery<BookData[]>({
+    queryKey: ['books', selectedTag],
+    queryFn: async () => {
+      const { data } = await api.get('/books', {
+        params: {
+          category: selectedTag,
+        },
+      })
+      return data.books ?? []
+    },
+  })
+
   return (
     <ExploreContainer>
       <Sidebar />
@@ -51,25 +63,28 @@ export default function Explore() {
           <SearchInput placeholder="Search for books or authors" />
         </div>
         <div className="tags">
-          <Tag isSelected>All</Tag>
-          <Tag>Computer</Tag>
-          <Tag>Education</Tag>
-          <Tag>Fantasy</Tag>
+          <Tag
+            isSelected={selectedTag === null}
+            onClick={() => handleSelectTag(null)}
+          >
+            All
+          </Tag>
+          {categories &&
+            categories.map((category) => (
+              <Tag
+                key={category.id}
+                isSelected={selectedTag === category.id}
+                onClick={() => handleSelectTag(category.id)}
+              >
+                {category.name}
+              </Tag>
+            ))}
         </div>
         <ExploreBooksGrid>
           {books &&
             books.map((book) => {
               return (
-                <BookCardModal
-                  key={`allBooks-${book.id}`}
-                  title={book.name}
-                  author={book.author}
-                  image={book.cover_url}
-                  rating={3}
-                  category="Computer Science"
-                  pages={book.total_pages}
-                  explore={true}
-                />
+                <BookCardModal key={`allBooks-${book.id}`} bookId={book.id} />
               )
             })}
         </ExploreBooksGrid>

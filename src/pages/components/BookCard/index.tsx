@@ -1,26 +1,24 @@
+import { Book } from '@prisma/client'
 import { Avatar } from '../Avatar'
 import { Rating } from '../Rating'
 import { CardContainer, Content, TitleAuthor, TopSection } from './styles'
+import { BookDetails } from '../BookCardModal'
+
+export type BookWithAVGRating = Book & {
+  AVGRating: number
+  alreadyRead: boolean
+}
 
 interface BookCardProps {
-  image: string
-  title: string
-  author: string
-  rating: number
-  date?: string
-  description?: string
+  book: BookDetails
   small?: boolean
   isReview?: boolean
   explore?: boolean
 }
 
 export function BookCard({
+  book,
   small = false,
-  image,
-  title,
-  author,
-  description,
-  rating,
   isReview = false,
   explore = false,
 }: BookCardProps) {
@@ -41,19 +39,19 @@ export function BookCard({
           <Rating rate={3} />
         </div>
       )}
-      <img src={image} alt="" width={108} height={152} />
+      <img src={book.cover_url} alt="" width={108} height={152} />
       <Content isSmall={small} isOnExplore={explore}>
         <div className="top-content">
           <TopSection isReview={isReview}>
             <span className="date">Hoje</span>
-            <Rating rate={rating} />
+            <Rating rate={book.AVGRating} />
           </TopSection>
           <TitleAuthor>
-            <h1>{title}</h1>
-            <span>{author}</span>
+            <h1>{book.name}</h1>
+            <span>{book.author}</span>
           </TitleAuthor>
         </div>
-        {small ? <></> : <p className="description">{description}</p>}
+        {small ? <></> : <p className="description">{book.summary}</p>}
       </Content>
     </CardContainer>
   )

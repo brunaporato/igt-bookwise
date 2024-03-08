@@ -3,11 +3,12 @@ import { TagContainer } from './styles'
 interface TagProps {
   children: string
   isSelected?: boolean
+  onClick?: () => void
 }
 
-export function Tag({ children, isSelected, ...props }: TagProps) {
+export function Tag({ children, isSelected, onClick, ...props }: TagProps) {
   return (
-    <TagContainer selected={isSelected} {...props}>
+    <TagContainer selected={isSelected} onClick={onClick} {...props}>
       {children}
     </TagContainer>
   )

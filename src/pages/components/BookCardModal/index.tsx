@@ -1,4 +1,4 @@
-import { BookCard } from '@/pages/components/BookCard'
+import { BookCard, BookWithAVGRating } from '@/pages/components/BookCard'
 import * as Dialog from '@radix-ui/react-dialog'
 import {
   BookCardModalContainer,
@@ -18,35 +18,47 @@ import { LoginModal } from '../../explore/components/LoginModal'
 import { useState } from 'react'
 import { Avatar } from '@/pages/components/Avatar'
 import { RatingInput } from '../../explore/components/RatingInput'
+import { BookData } from '@/pages/explore/index.page'
+import {
+  CategoriesOnBooks,
+  Category,
+  Rating as RatingType,
+  User,
+} from '@prisma/client'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@/lib/axios'
 
-interface BookCardModalProps {
-  title: string
-  author: string
-  image: string
-  rating: number
-  description?: string
-  category?: string
-  pages?: number
-  small?: boolean
-  isReview?: boolean
-  explore?: boolean
+export type ReviewWithAuthor = RatingType & {
+  user: User
 }
 
-export function BookCardModal({
-  title,
-  author,
-  image,
-  rating,
-  category,
-  pages,
-  small,
-  isReview,
-  description,
-  explore,
-}: BookCardModalProps) {
+export type BookDetails = BookWithAVGRating & {
+  ratings: ReviewWithAuthor[]
+  categories: (CategoriesOnBooks & {
+    category: Category
+  })[]
+}
+
+interface BookCardModalProps {
+  bookId: string
+}
+
+export function BookCardModal({ bookId }: BookCardModalProps) {
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false)
   const [userRating, setUserRating] = useState(0)
   const isUserLogged = false
+
+  const { data: book } = useQuery<BookDetails>({
+    queryKey: ['book', bookId],
+    queryFn: async () => {
+      const { data } = await api.get(`/books/details/${bookId}`)
+      return data?.book ?? {}
+    },
+  })
+
+  const sortedBookReviews = book?.ratings.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  })
 
   function handleCloseCommentBox() {
     setIsCommentBoxOpen(false)
@@ -56,109 +68,107 @@ export function BookCardModal({
     setIsCommentBoxOpen(true)
   }
 
+  // TODO: arrumar a category
+
   return (
     <BookCardModalContainer>
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <button className="Button violet">
-            <BookCard
-              title={title}
-              author={author}
-              image={image}
-              rating={rating}
-              small={small}
-              explore={explore}
-              isReview={isReview}
-              description={description}
-            />
-          </button>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <DialogOverlay />
-          <DialogBox>
-            <DialogClose>
-              <X size={24} weight="bold" />
-            </DialogClose>
-            <DialogBookInfos>
-              <section className="top">
-                <img src={image} alt="" height={242} />
-                <div className="infos">
-                  <div className="title-author">
-                    <h2>{title}</h2>
-                    <span>{author}</span>
-                  </div>
-                  <div className="rating">
-                    <Rating rate={rating} />
-                    <span>3 avaliações</span>
-                  </div>
-                </div>
-              </section>
-              <div className="more-info">
-                <MoreInfoItem>
-                  <BookmarkSimple size={24} weight="bold" />
-                  <div>
-                    <span>Category</span>
-                    <p>{category}</p>
-                  </div>
-                </MoreInfoItem>
-                <MoreInfoItem>
-                  <BookOpen size={24} weight="bold" />
-                  <div>
-                    <span>Pages</span>
-                    <p>{pages}</p>
-                  </div>
-                </MoreInfoItem>
-              </div>
-            </DialogBookInfos>
-            <CommentsBox>
-              <div className="title">
-                <h2>Reviews</h2>
-                {isUserLogged ? (
-                  <button
-                    className={isCommentBoxOpen ? 'no-display' : ''}
-                    onClick={handleOpenCommentBox}
-                  >
-                    Add review
-                  </button>
-                ) : (
-                  <LoginModal />
-                )}
-              </div>
-              {isCommentBoxOpen && isUserLogged && (
-                <ReviewInputBox>
-                  <div className="top">
-                    <div className="user-info">
-                      <Avatar
-                        avatar="https://github.com/brunaporato.png"
-                        variant="card"
-                      />
-                      Cristofer Rosser
+      {book && (
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <button className="Button violet">
+              <BookCard book={book} small explore />
+            </button>
+          </Dialog.Trigger>
+          <Dialog.Portal>
+            <DialogOverlay />
+            <DialogBox>
+              <DialogClose>
+                <X size={24} weight="bold" />
+              </DialogClose>
+              <DialogBookInfos>
+                <section className="top">
+                  <img src={book.cover_url} alt="" height={242} />
+                  <div className="infos">
+                    <div className="title-author">
+                      <h2>{book.name}</h2>
+                      <span>{book.author}</span>
                     </div>
-                    <RatingInput
-                      onRateChange={(newRate) => setUserRating(newRate)}
-                    />
+                    <div className="rating">
+                      <Rating rate={0} />
+                      <span>3 avaliações</span>
+                    </div>
                   </div>
-                  <textarea placeholder="Write your review" />
-                  <div className="buttons">
-                    <ReviewButton variant="green">
-                      <Check size={24} />
-                    </ReviewButton>
-                    <ReviewButton
-                      variant="purple"
-                      onClick={handleCloseCommentBox}
+                </section>
+                <div className="more-info">
+                  <MoreInfoItem>
+                    <BookmarkSimple size={24} weight="bold" />
+                    <div>
+                      <span>Category</span>
+                      <p>{'teste'}</p>
+                    </div>
+                  </MoreInfoItem>
+                  <MoreInfoItem>
+                    <BookOpen size={24} weight="bold" />
+                    <div>
+                      <span>Pages</span>
+                      <p>{book.total_pages}</p>
+                    </div>
+                  </MoreInfoItem>
+                </div>
+              </DialogBookInfos>
+              <CommentsBox>
+                <div className="title">
+                  <h2>Reviews</h2>
+                  {isUserLogged ? (
+                    <button
+                      className={isCommentBoxOpen ? 'no-display' : ''}
+                      onClick={handleOpenCommentBox}
                     >
-                      <X size={24} />
-                    </ReviewButton>
-                  </div>
-                </ReviewInputBox>
-              )}
-              <div className="list">
-                <Review />
-              </div>
-            </CommentsBox>
-          </DialogBox>
-        </Dialog.Portal>
-      </Dialog.Root>
+                      Add review
+                    </button>
+                  ) : (
+                    <LoginModal />
+                  )}
+                </div>
+                {isCommentBoxOpen && isUserLogged && (
+                  <ReviewInputBox>
+                    <div className="top">
+                      <div className="user-info">
+                        <Avatar
+                          avatar="https://github.com/brunaporato.png"
+                          variant="card"
+                        />
+                        Cristofer Rosser
+                      </div>
+                      <RatingInput
+                        onRateChange={(newRate) => setUserRating(newRate)}
+                      />
+                    </div>
+                    <textarea placeholder="Write your review" />
+                    <div className="buttons">
+                      <ReviewButton variant="green">
+                        <Check size={24} />
+                      </ReviewButton>
+                      <ReviewButton
+                        variant="purple"
+                        onClick={handleCloseCommentBox}
+                      >
+                        <X size={24} />
+                      </ReviewButton>
+                    </div>
+                  </ReviewInputBox>
+                )}
+                <div className="list">
+                  {sortedBookReviews &&
+                    sortedBookReviews.map((rating) => {
+                      return <Review key={rating.id} review={rating} />
+                    })}
+                </div>
+              </CommentsBox>
+            </DialogBox>
+          </Dialog.Portal>
+        </Dialog.Root>
+      )}
     </BookCardModalContainer>
   )
 }
