@@ -18,7 +18,6 @@ import { LoginModal } from '../../explore/components/LoginModal'
 import { useState } from 'react'
 import { Avatar } from '@/pages/components/Avatar'
 import { RatingInput } from '../../explore/components/RatingInput'
-import { BookData } from '@/pages/explore/index.page'
 import {
   CategoriesOnBooks,
   Category,
@@ -60,6 +59,9 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   })
 
+  const categories =
+    book?.categories.map((X) => X.category.name).join(', ') ?? ''
+
   function handleCloseCommentBox() {
     setIsCommentBoxOpen(false)
   }
@@ -67,8 +69,6 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
   function handleOpenCommentBox() {
     setIsCommentBoxOpen(true)
   }
-
-  // TODO: arrumar a category
 
   return (
     <BookCardModalContainer>
@@ -94,8 +94,12 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
                       <span>{book.author}</span>
                     </div>
                     <div className="rating">
-                      <Rating rate={0} />
-                      <span>3 avaliações</span>
+                      <Rating rate={book.AVGRating} />
+                      <span>
+                        {sortedBookReviews && sortedBookReviews?.length > 1
+                          ? `${sortedBookReviews?.length} avaliações`
+                          : `${sortedBookReviews?.length} avaliação`}
+                      </span>
                     </div>
                   </div>
                 </section>
@@ -104,7 +108,7 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
                     <BookmarkSimple size={24} weight="bold" />
                     <div>
                       <span>Category</span>
-                      <p>{'teste'}</p>
+                      <p>{categories}</p>
                     </div>
                   </MoreInfoItem>
                   <MoreInfoItem>
