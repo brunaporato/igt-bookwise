@@ -130,8 +130,8 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
                       <Rating rate={book.AVGRating} />
                       <span>
                         {sortedBookReviews && sortedBookReviews?.length > 1
-                          ? `${sortedBookReviews?.length} avaliações`
-                          : `${sortedBookReviews?.length} avaliação`}
+                          ? `${sortedBookReviews?.length} reviews`
+                          : `${sortedBookReviews?.length} review`}
                       </span>
                     </div>
                   </div>
