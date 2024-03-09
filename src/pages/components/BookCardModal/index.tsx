@@ -13,7 +13,7 @@ import {
 } from './styles'
 import { Rating } from '@/pages/components/Rating'
 import { BookOpen, BookmarkSimple, Check, X } from '@phosphor-icons/react'
-import { Review } from '../../explore/components/Review'
+import { Review } from '../Review'
 import { LoginModal } from '../../explore/components/LoginModal'
 import { FormEvent, useState } from 'react'
 import { Avatar } from '@/pages/components/Avatar'
@@ -40,9 +40,17 @@ export type BookDetails = BookWithAVGRating & {
 
 interface BookCardModalProps {
   bookId: string
+  small?: boolean
+  isReview?: boolean
+  explore?: boolean
 }
 
-export function BookCardModal({ bookId }: BookCardModalProps) {
+export function BookCardModal({
+  bookId,
+  small,
+  isReview,
+  explore,
+}: BookCardModalProps) {
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false)
   const [userReview, setUserReview] = useState('')
   const [userRating, setUserRating] = useState(0)
@@ -109,7 +117,12 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <button className="Button violet">
-              <BookCard book={book} small explore />
+              <BookCard
+                book={book}
+                small={small}
+                explore={explore}
+                isReview={isReview}
+              />
             </button>
           </Dialog.Trigger>
           <Dialog.Portal>

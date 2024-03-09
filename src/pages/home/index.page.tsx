@@ -12,11 +12,64 @@ import {
 import { BookCardModal } from '../components/BookCardModal'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { useQuery } from '@tanstack/react-query'
+import { ReviewWithAuthorAndBook } from '../components/Review'
+import { api } from '@/lib/axios'
+import { BookCard } from '../components/BookCard'
+import { Book } from '@prisma/client'
+
+export type PopularBooksWithAVGRating = Book & {
+  avgRating: number
+}
 
 export default function Home() {
   const router = useRouter()
+
   const { data: session } = useSession()
-  const user = session?.user
+
+  const userEmail = session?.user?.email
+
+  const { data: userData } = useQuery({
+    queryKey: ['users', userEmail],
+    queryFn: async () => {
+      return await api.get('/users', {
+        params: {
+          userEmail,
+        },
+      })
+    },
+  })
+
+  let userId = null
+
+  if (userData) {
+    userId = userData?.data.user.id
+  }
+
+  const { data: lastUserReview } = useQuery<ReviewWithAuthorAndBook>({
+    queryKey: ['latest-user-review', userId],
+    queryFn: async () => {
+      const { data } = await api.get('/reviews/user-latest')
+      return data.review ?? null
+    },
+    enabled: !!userId,
+  })
+
+  const { data: lastReviews } = useQuery<ReviewWithAuthorAndBook[]>({
+    queryKey: ['latest-reviews'],
+    queryFn: async () => {
+      const { data } = await api.get('/reviews/latest')
+      return data.reviews ?? []
+    },
+  })
+
+  const { data: popularBooks } = useQuery<PopularBooksWithAVGRating[]>({
+    queryKey: ['popular-books'],
+    queryFn: async () => {
+      const { data } = await api.get('/books/popular-books')
+      return data.popularBooks ?? []
+    },
+  })
 
   async function handleSeeMoreBooks() {
     router.push('/explore')
@@ -32,7 +85,7 @@ export default function Home() {
             <h1>Home</h1>
           </PageTitle>
 
-          {!!user && (
+          {!!lastUserReview && (
             <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>
@@ -41,13 +94,7 @@ export default function Home() {
                 </button>
               </TopSubtitle>
               <CardsContainer>
-                <BookCardModal
-                  title="O Hobbit"
-                  author="J.R.R. Tolkien"
-                  image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-                  description="Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh..."
-                  rating={2}
-                />
+                <BookCard review={lastUserReview} />
               </CardsContainer>
             </Timeline>
           )}
@@ -57,22 +104,10 @@ export default function Home() {
               <p>Most recent ratings</p>
             </TopSubtitle>
             <CardsContainer>
-              <BookCardModal
-                title="Entendendo Algoritmos"
-                author="Adjia Galine"
-                image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-                description="Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectu..."
-                rating={1}
-                isReview={true}
-              />
-              <BookCardModal
-                title="O Hobbit"
-                author="J.R.R. Tolkien"
-                image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-                description="Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh..."
-                rating={2}
-                isReview={true}
-              />
+              {lastReviews &&
+                lastReviews.map((review) => {
+                  return <BookCard key={review.id} review={review} isReview />
+                })}
             </CardsContainer>
           </Timeline>
         </div>
@@ -85,20 +120,12 @@ export default function Home() {
             </button>
           </TopSubtitle>
           <CardsContainer>
-            <BookCardModal
-              small={true}
-              title="Entendendo Algoritmos"
-              author="Adjia Galine"
-              image="https://m.media-amazon.com/images/I/519UnakaarL.jpg"
-              rating={3}
-            />
-            <BookCardModal
-              small={true}
-              title="O Hobbit"
-              author="J.R.R. Tolkien"
-              image="https://m.media-amazon.com/images/I/51S6-VeaHJL.jpg"
-              rating={5}
-            />
+            {popularBooks &&
+              popularBooks.map((book) => {
+                return (
+                  <BookCardModal key={book.id} small={true} bookId={book.id} />
+                )
+              })}
           </CardsContainer>
         </PopularBooks>
       </HomeContent>

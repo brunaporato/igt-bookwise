@@ -84,7 +84,6 @@ export const CardContainer = styled('div', {
 export const Content = styled('main', {
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
   gridArea: 'bookInfo',
 
   '> .description': {

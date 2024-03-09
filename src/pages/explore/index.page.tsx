@@ -84,7 +84,11 @@ export default function Explore() {
           {books &&
             books.map((book) => {
               return (
-                <BookCardModal key={`allBooks-${book.id}`} bookId={book.id} />
+                <BookCardModal
+                  key={`allBooks-${book.id}`}
+                  bookId={book.id}
+                  small
+                />
               )
             })}
         </ExploreBooksGrid>
