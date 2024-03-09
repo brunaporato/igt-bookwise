@@ -9,6 +9,8 @@ export const ReviewContainer = styled('div', {
   background: '$gray700',
   borderRadius: 8,
 
+  marginBottom: '$4',
+
   '> p': {
     fontSize: '$sm',
     color: '$gray300',

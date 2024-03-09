@@ -189,7 +189,7 @@ export const CommentsBox = styled('div', {
   },
 })
 
-export const ReviewInputBox = styled('div', {
+export const ReviewInputBox = styled('form', {
   display: 'flex',
   flexDirection: 'column',
   padding: '$6',

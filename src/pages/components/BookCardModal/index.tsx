@@ -15,7 +15,7 @@ import { Rating } from '@/pages/components/Rating'
 import { BookOpen, BookmarkSimple, Check, X } from '@phosphor-icons/react'
 import { Review } from '../../explore/components/Review'
 import { LoginModal } from '../../explore/components/LoginModal'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Avatar } from '@/pages/components/Avatar'
 import { RatingInput } from '../../explore/components/RatingInput'
 import {
@@ -24,7 +24,7 @@ import {
   Rating as RatingType,
   User,
 } from '@prisma/client'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 
 export type ReviewWithAuthor = RatingType & {
@@ -44,8 +44,11 @@ interface BookCardModalProps {
 
 export function BookCardModal({ bookId }: BookCardModalProps) {
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false)
+  const [userReview, setUserReview] = useState('')
   const [userRating, setUserRating] = useState(0)
-  const isUserLogged = false
+  const isUserLogged = true
+
+  const queryClient = useQueryClient()
 
   const { data: book } = useQuery<BookDetails>({
     queryKey: ['book', bookId],
@@ -62,12 +65,42 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
   const categories =
     book?.categories.map((X) => X.category.name).join(', ') ?? ''
 
+  function handleCloseReview() {
+    setIsCommentBoxOpen(false)
+    setUserRating(0)
+    setUserReview('')
+  }
+
+  const { mutateAsync: handleReview } = useMutation({
+    mutationFn: async () => {
+      await api.post(`/books/${bookId}/review`, {
+        description: userReview,
+        rate: userRating,
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['book', bookId],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['books'],
+      })
+      handleCloseReview()
+    },
+  })
+
   function handleCloseCommentBox() {
     setIsCommentBoxOpen(false)
   }
 
   function handleOpenCommentBox() {
     setIsCommentBoxOpen(true)
+  }
+
+  async function handleFormSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    await handleReview()
   }
 
   return (
@@ -135,7 +168,7 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
                   )}
                 </div>
                 {isCommentBoxOpen && isUserLogged && (
-                  <ReviewInputBox>
+                  <ReviewInputBox onSubmit={handleFormSubmit}>
                     <div className="top">
                       <div className="user-info">
                         <Avatar
@@ -148,9 +181,12 @@ export function BookCardModal({ bookId }: BookCardModalProps) {
                         onRateChange={(newRate) => setUserRating(newRate)}
                       />
                     </div>
-                    <textarea placeholder="Write your review" />
+                    <textarea
+                      placeholder="Write your review"
+                      onChange={(text) => setUserReview(text.target.value)}
+                    />
                     <div className="buttons">
-                      <ReviewButton variant="green">
+                      <ReviewButton variant="green" type="submit">
                         <Check size={24} />
                       </ReviewButton>
                       <ReviewButton

@@ -18,11 +18,13 @@
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
     "next": "14.0.4",
+    "next-auth": "^4.24.7",
     "phosphor-icons": "^1.4.2",
     "prisma": "^5.8.1",
     "react": "^18",
     "react-dom": "^18",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
