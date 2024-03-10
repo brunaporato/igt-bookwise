@@ -20,64 +20,78 @@ import {
   UserList,
 } from '@phosphor-icons/react'
 import { api } from '@/lib/axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { CaretLeft } from '@phosphor-icons/react/dist/ssr'
+import { Book, CategoriesOnBooks, Category, Rating } from '@prisma/client'
+import { useQuery } from '@tanstack/react-query'
+import { getRelativeTimeString } from '@/utils/get-relative-time-string'
+
+export interface ProfileRating extends Rating {
+  book: Book & {
+    categories: CategoriesOnBooks &
+      {
+        category: Category
+      }[]
+  }
+}
 
 interface UserData {
-  created_at: Date
-  image: string
-  name: string
-  id: string
+  ratings: ProfileRating[]
+  user: {
+    image: string
+    name: string
+    created_at: Date
+    email: string
+  }
+  readPages: number
+  ratedBooks: number
+  readAuthors: number
+  mostReadCategory?: string
 }
 
 export default function Profile() {
-  const [user, setUser] = useState<UserData>()
-
+  const [search, setSearch] = useState('')
   const router = useRouter()
-  const { userId } = router.query
+  const { data: session, status } = useSession()
+  const userId = router.query.userId as string
 
-  const { data: session } = useSession()
+  const { data: user } = useQuery<UserData>({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      const { data } = await api.get(`/users?userId=${userId}`)
+      return data.user ?? {}
+    },
+    enabled: !!userId,
+  })
 
-  const memberJoinYear = user && dayjs(user.created_at).year()
+  const isOwnProfile = session?.user?.email === user?.user.email
+
+  const memberJoinYear = user && dayjs(user.user.created_at).year()
+
+  const filteredReviews = useMemo(() => {
+    return user?.ratings.filter((rating) => {
+      return rating.book.name.toLowerCase().includes(search.toLowerCase())
+    })
+  }, [user?.ratings, search])
 
   function handleReturnPage() {
     router.back()
   }
 
   useEffect(() => {
-    async function fetchData() {
-      if (userId !== 'me') {
-        try {
-          const { data } = await api.get(`/users?userId=${userId}`)
-          const userData = data.user
-          setUser(userData)
-        } catch (error) {
-          console.error('Error fetching user data:', error)
-        }
-      } else {
-        try {
-          const { data } = await api.get(
-            `/users?userEmail=${session?.user?.email}`,
-          )
-          const userData = data.user
-          setUser(userData)
-        } catch (error) {
-          console.error('Error fetching user data:', error)
-        }
-      }
+    if (status !== 'authenticated') {
+      router.push('/')
     }
-
-    fetchData()
-  }, [session?.user?.email, userId])
+  }, [status, router])
 
   return (
     <ProfileContainer>
       <Sidebar />
       <ProfilePageContent>
-        {userId === 'me' ? (
+        {isOwnProfile ? (
           <PageTitle>
             <User size={32} />
             <h1>Profile</h1>
@@ -89,26 +103,36 @@ export default function Profile() {
           </ReturnPage>
         )}
 
-        <SearchInput placeholder="Search reviews" />
+        <SearchInput
+          placeholder="Search reviews"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <div className="reviews">
-          <div className="post">
-            <span>2 days ago</span>
-            <ProfileReview
-              image={'https://m.media-amazon.com/images/I/519UnakaarL.jpg'}
-              title={'Entendendo Algoritmos'}
-              author={'Aditya Bhargava'}
-              rating={4}
-              description="Tristique massa sed enim lacinia odio. Congue ut faucibus nunc vitae non. Nam feugiat vel morbi viverra vitae mi. Vitae fringilla ut et suspendisse enim suspendisse vitae. Leo non eget lacus sollicitudin tristique pretium quam. Mollis et luctus amet sed convallis varius massa sagittis.
-Proin sed proin at leo quis ac sem. Nam donec accumsan curabitur amet tortor quam sit. Bibendum enim sit dui lorem urna amet elit rhoncus ut. Aliquet euismod vitae ut turpis. Aliquam amet integer pellentesque."
-            />
-          </div>
+          {filteredReviews
+            ? filteredReviews.map((review) => {
+                return (
+                  <div className="post" key={review.id}>
+                    <span>
+                      {getRelativeTimeString(
+                        new Date(review.created_at),
+                        'en-US',
+                      )}
+                    </span>
+                    <ProfileReview review={review} />
+                  </div>
+                )
+              })
+            : search
+              ? 'No results were found'
+              : 'Reviews are still empty'}
         </div>
       </ProfilePageContent>
       <ProfileBox>
         <ProfileInfos>
-          <Avatar avatar={String(user?.image)} variant="profile" />
+          <Avatar avatar={user?.user.image} variant="profile" />
           <div>
-            <h2>{user?.name}</h2>
+            <h2>{user?.user.name}</h2>
             <span>Member since {memberJoinYear}</span>
           </div>
         </ProfileInfos>
@@ -117,28 +141,28 @@ Proin sed proin at leo quis ac sem. Nam donec accumsan curabitur amet tortor qua
           <ProfileDataItem>
             <BookOpen size={32} />
             <div>
-              <p>3853</p>
+              <p>{user?.readPages}</p>
               <span>Pages read</span>
             </div>
           </ProfileDataItem>
           <ProfileDataItem>
             <Books size={32} />
             <div>
-              <p>10</p>
+              <p>{user?.ratedBooks}</p>
               <span>Books rated</span>
             </div>
           </ProfileDataItem>
           <ProfileDataItem>
             <UserList size={32} />
             <div>
-              <p>8</p>
+              <p>{user?.readAuthors}</p>
               <span>Authors read</span>
             </div>
           </ProfileDataItem>
           <ProfileDataItem>
             <BookmarkSimple size={32} />
             <div>
-              <p>Computer Science</p>
+              <p>{user?.mostReadCategory}</p>
               <span>Most read category</span>
             </div>
           </ProfileDataItem>

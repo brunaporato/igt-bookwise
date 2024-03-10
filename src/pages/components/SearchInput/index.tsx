@@ -1,14 +1,13 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
 import { SearchContainer } from './styles'
+import { InputHTMLAttributes } from 'react'
 
-interface SearchInputProps {
-  placeholder: string
-}
+type SearchInputProps = InputHTMLAttributes<HTMLInputElement>
 
-export function SearchInput({ placeholder }: SearchInputProps) {
+export function SearchInput({ ...props }: SearchInputProps) {
   return (
     <SearchContainer>
-      <input type="text" placeholder={placeholder} />
+      <input type="text" {...props} />
       <MagnifyingGlass size={20} />
     </SearchContainer>
   )

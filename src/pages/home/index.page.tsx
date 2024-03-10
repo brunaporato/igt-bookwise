@@ -40,7 +40,7 @@ export default function Home() {
     },
   })
 
-  let userId = null
+  let userId: string | null = null
 
   if (userData) {
     userId = userData?.data.user.id
@@ -76,7 +76,7 @@ export default function Home() {
   }
 
   async function handleSeeMoreReviews() {
-    router.push('/profile/me')
+    router.push(`/profile/${userId}`)
   }
 
   return (

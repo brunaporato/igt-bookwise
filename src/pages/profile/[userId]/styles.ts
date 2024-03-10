@@ -32,6 +32,7 @@ export const ProfilePageContent = styled('section', {
     flexDirection: 'column',
     gap: '$2',
     alignSelf: 'stretch',
+    marginBottom: '$6',
 
     span: {
       color: '$gray300',
@@ -50,6 +51,8 @@ export const ProfileBox = styled('div', {
 
   borderLeft: '1px solid $gray700',
   marginTop: '8.7rem',
+
+  alignSelf: 'flex-start',
 
   '.decoration': {
     content: '',

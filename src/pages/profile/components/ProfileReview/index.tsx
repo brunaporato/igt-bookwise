@@ -1,34 +1,25 @@
 import { Rating } from '@/pages/components/Rating'
 import { ReviewContainer, TitleAuthor, TopCard } from './styles'
+import { ProfileRating } from '../../[userId]/index.page'
 
 interface ProfileReview {
-  image: string
-  title: string
-  author: string
-  rating: number
-  description: string
+  review: ProfileRating
 }
 
-export function ProfileReview({
-  image,
-  title,
-  author,
-  description,
-  rating,
-}: ProfileReview) {
+export function ProfileReview({ review }: ProfileReview) {
   return (
     <ReviewContainer>
       <TopCard>
-        <img src={image} alt="" width={108} height={152} />
+        <img src={review.book.cover_url} alt="" width={108} height={152} />
         <div className="infos">
           <TitleAuthor>
-            <h2>{title}</h2>
-            <span>{author}</span>
+            <h2>{review.book.name}</h2>
+            <span>{review.book.author}</span>
           </TitleAuthor>
-          <Rating rate={rating} />
+          <Rating rate={review.rate} />
         </div>
       </TopCard>
-      <p>{description}</p>
+      <p>{review.description}</p>
     </ReviewContainer>
   )
 }
