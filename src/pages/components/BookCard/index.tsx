@@ -33,8 +33,9 @@ export function BookCard({
   let user
   let timeDistance
 
-  if (isReview) {
-    user = review?.user
+  if (review) {
+    user = review.user
+    timeDistance = getRelativeTimeString(new Date(review.created_at), 'en-US')
   } else {
     user = data?.user
   }
@@ -45,11 +46,8 @@ export function BookCard({
       const { data } = await api.get(`/books/details/${review?.book_id}`)
       return data?.book ?? {}
     },
+    enabled: !!review,
   })
-
-  if (review) {
-    timeDistance = getRelativeTimeString(new Date(review.created_at), 'en-US')
-  }
 
   const bookDetails = book || bookData
 

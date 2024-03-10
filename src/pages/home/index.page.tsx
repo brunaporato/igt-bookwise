@@ -75,6 +75,10 @@ export default function Home() {
     router.push('/explore')
   }
 
+  async function handleSeeMoreReviews() {
+    router.push('/profile/me')
+  }
+
   return (
     <HomeContainer>
       <Sidebar />
@@ -85,11 +89,11 @@ export default function Home() {
             <h1>Home</h1>
           </PageTitle>
 
-          {!!lastUserReview && (
+          {lastUserReview && (
             <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>
-                <button onClick={handleSeeMoreBooks}>
+                <button onClick={handleSeeMoreReviews}>
                   See more <CaretRight weight="bold" />
                 </button>
               </TopSubtitle>
