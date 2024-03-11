@@ -26,6 +26,7 @@ export interface BookData {
 
 export default function Explore() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
 
   function handleSelectTag(tag: string | null) {
     setSelectedTag(tag)
@@ -51,6 +52,13 @@ export default function Explore() {
     },
   })
 
+  const filteredBooks = books?.filter((book) => {
+    return (
+      book.name.toLowerCase().includes(search.toLowerCase()) ||
+      book.author.toLowerCase().includes(search.toLowerCase())
+    )
+  })
+
   return (
     <ExploreContainer>
       <Sidebar />
@@ -60,7 +68,11 @@ export default function Explore() {
             <Binoculars size={32} />
             <h1>Explore</h1>
           </PageTitle>
-          <SearchInput placeholder="Search for books or authors" />
+          <SearchInput
+            placeholder="Search for books or authors"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
         <div className="tags">
           <Tag
@@ -81,8 +93,8 @@ export default function Explore() {
             ))}
         </div>
         <ExploreBooksGrid>
-          {books &&
-            books.map((book) => {
+          {filteredBooks &&
+            filteredBooks.map((book) => {
               return (
                 <BookCardModal
                   key={`allBooks-${book.id}`}
