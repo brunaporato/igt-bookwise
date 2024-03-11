@@ -20,7 +20,7 @@ import {
   UserList,
 } from '@phosphor-icons/react'
 import { api } from '@/lib/axios'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
@@ -57,7 +57,7 @@ interface UserData {
 export default function Profile() {
   const [search, setSearch] = useState('')
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const userId = router.query.userId as string
 
   const { data: user } = useQuery<UserData>({
@@ -82,12 +82,6 @@ export default function Profile() {
   function handleReturnPage() {
     router.back()
   }
-
-  useEffect(() => {
-    if (status !== 'authenticated') {
-      router.push('/')
-    }
-  }, [status, router])
 
   return (
     <ProfileContainer>
