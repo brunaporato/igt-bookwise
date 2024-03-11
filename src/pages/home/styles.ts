@@ -15,6 +15,8 @@ export const HomeContent = styled('main', {
 
   margin: '4.5rem 0 0 21.75rem',
 
+  position: 'relative',
+
   '.title': {
     display: 'flex',
     alignItems: 'center',
@@ -67,6 +69,9 @@ export const PopularBooks = styled('section', {
   gap: '$4',
 
   marginTop: '4rem',
+
+  position: 'fixed',
+  right: '$10',
 })
 
 export const TopSubtitle = styled('div', {
