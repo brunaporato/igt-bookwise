@@ -28,6 +28,7 @@ import { CaretLeft } from '@phosphor-icons/react/dist/ssr'
 import { Book, CategoriesOnBooks, Category, Rating } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { NextSeo } from 'next-seo'
 
 dayjs.extend(relativeTime)
 
@@ -84,81 +85,85 @@ export default function Profile() {
   }
 
   return (
-    <ProfileContainer>
-      <Sidebar />
-      <ProfilePageContent>
-        {isOwnProfile ? (
-          <PageTitle>
-            <User size={32} />
-            <h1>Profile</h1>
-          </PageTitle>
-        ) : (
-          <ReturnPage onClick={handleReturnPage}>
-            <CaretLeft weight="bold" size={20} />
-            Voltar
-          </ReturnPage>
-        )}
+    <>
+      <NextSeo title={`${user?.user.name}'s Profile | BookWise`} />
 
-        <SearchInput
-          placeholder="Search reviews"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <div className="reviews">
-          {filteredReviews
-            ? filteredReviews.map((review) => {
-                return (
-                  <div className="post" key={review.id}>
-                    <span>{dayjs(review.created_at).fromNow()}</span>
-                    <ProfileReview review={review} />
-                  </div>
-                )
-              })
-            : search
-              ? 'No results were found'
-              : 'Reviews are still empty'}
-        </div>
-      </ProfilePageContent>
-      <ProfileBox>
-        <ProfileInfos>
-          <Avatar avatar={user?.user.image} variant="profile" />
-          <div>
-            <h2>{user?.user.name}</h2>
-            <span>Member since {memberJoinYear}</span>
+      <ProfileContainer>
+        <Sidebar />
+        <ProfilePageContent>
+          {isOwnProfile ? (
+            <PageTitle>
+              <User size={32} />
+              <h1>Profile</h1>
+            </PageTitle>
+          ) : (
+            <ReturnPage onClick={handleReturnPage}>
+              <CaretLeft weight="bold" size={20} />
+              Voltar
+            </ReturnPage>
+          )}
+
+          <SearchInput
+            placeholder="Search reviews"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="reviews">
+            {filteredReviews
+              ? filteredReviews.map((review) => {
+                  return (
+                    <div className="post" key={review.id}>
+                      <span>{dayjs(review.created_at).fromNow()}</span>
+                      <ProfileReview review={review} />
+                    </div>
+                  )
+                })
+              : search
+                ? 'No results were found'
+                : 'Reviews are still empty'}
           </div>
-        </ProfileInfos>
-        <div className="decoration"></div>
-        <ProfileData>
-          <ProfileDataItem>
-            <BookOpen size={32} />
+        </ProfilePageContent>
+        <ProfileBox>
+          <ProfileInfos>
+            <Avatar avatar={user?.user.image} variant="profile" />
             <div>
-              <p>{user?.readPages}</p>
-              <span>Pages read</span>
+              <h2>{user?.user.name}</h2>
+              <span>Member since {memberJoinYear}</span>
             </div>
-          </ProfileDataItem>
-          <ProfileDataItem>
-            <Books size={32} />
-            <div>
-              <p>{user?.ratedBooks}</p>
-              <span>Books rated</span>
-            </div>
-          </ProfileDataItem>
-          <ProfileDataItem>
-            <UserList size={32} />
-            <div>
-              <p>{user?.readAuthors}</p>
-              <span>Authors read</span>
-            </div>
-          </ProfileDataItem>
-          <ProfileDataItem>
-            <BookmarkSimple size={32} />
-            <div>
-              <p>{user?.mostReadCategory}</p>
-              <span>Most read category</span>
-            </div>
-          </ProfileDataItem>
-        </ProfileData>
-      </ProfileBox>
-    </ProfileContainer>
+          </ProfileInfos>
+          <div className="decoration"></div>
+          <ProfileData>
+            <ProfileDataItem>
+              <BookOpen size={32} />
+              <div>
+                <p>{user?.readPages}</p>
+                <span>Pages read</span>
+              </div>
+            </ProfileDataItem>
+            <ProfileDataItem>
+              <Books size={32} />
+              <div>
+                <p>{user?.ratedBooks}</p>
+                <span>Books rated</span>
+              </div>
+            </ProfileDataItem>
+            <ProfileDataItem>
+              <UserList size={32} />
+              <div>
+                <p>{user?.readAuthors}</p>
+                <span>Authors read</span>
+              </div>
+            </ProfileDataItem>
+            <ProfileDataItem>
+              <BookmarkSimple size={32} />
+              <div>
+                <p>{user?.mostReadCategory}</p>
+                <span>Most read category</span>
+              </div>
+            </ProfileDataItem>
+          </ProfileData>
+        </ProfileBox>
+      </ProfileContainer>
+    </>
   )
 }

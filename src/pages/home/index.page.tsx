@@ -17,6 +17,7 @@ import { ReviewWithAuthorAndBook } from '../components/Review'
 import { api } from '@/lib/axios'
 import { BookCard } from '../components/BookCard'
 import { Book } from '@prisma/client'
+import { NextSeo } from 'next-seo'
 
 export type PopularBooksWithAVGRating = Book & {
   avgRating: number
@@ -80,59 +81,67 @@ export default function Home() {
   }
 
   return (
-    <HomeContainer>
-      <Sidebar />
-      <HomeContent>
-        <div className="timeline">
-          <PageTitle>
-            <ChartLineUp size={32} className="icon" weight="bold" />
-            <h1>Home</h1>
-          </PageTitle>
+    <>
+      <NextSeo title="BookWise" />
 
-          {lastUserReview?.book && (
+      <HomeContainer>
+        <Sidebar />
+        <HomeContent>
+          <div className="timeline">
+            <PageTitle>
+              <ChartLineUp size={32} className="icon" weight="bold" />
+              <h1>Home</h1>
+            </PageTitle>
+
+            {lastUserReview?.book && (
+              <Timeline>
+                <TopSubtitle>
+                  <p>Your last reading</p>
+                  <button onClick={handleSeeMoreReviews}>
+                    See more <CaretRight weight="bold" />
+                  </button>
+                </TopSubtitle>
+                <CardsContainer>
+                  <BookCard review={lastUserReview} />
+                </CardsContainer>
+              </Timeline>
+            )}
+
             <Timeline>
               <TopSubtitle>
-                <p>Your last reading</p>
-                <button onClick={handleSeeMoreReviews}>
-                  See more <CaretRight weight="bold" />
-                </button>
+                <p>Most recent ratings</p>
               </TopSubtitle>
               <CardsContainer>
-                <BookCard review={lastUserReview} />
+                {lastReviews &&
+                  lastReviews.map((review) => {
+                    return <BookCard key={review.id} review={review} isReview />
+                  })}
               </CardsContainer>
             </Timeline>
-          )}
+          </div>
 
-          <Timeline>
+          <PopularBooks>
             <TopSubtitle>
-              <p>Most recent ratings</p>
+              <p>Popular Books</p>
+              <button onClick={handleSeeMoreBooks}>
+                See more <CaretRight weight="bold" />
+              </button>
             </TopSubtitle>
             <CardsContainer>
-              {lastReviews &&
-                lastReviews.map((review) => {
-                  return <BookCard key={review.id} review={review} isReview />
+              {popularBooks &&
+                popularBooks.map((book) => {
+                  return (
+                    <BookCardModal
+                      key={book.id}
+                      small={true}
+                      bookId={book.id}
+                    />
+                  )
                 })}
             </CardsContainer>
-          </Timeline>
-        </div>
-
-        <PopularBooks>
-          <TopSubtitle>
-            <p>Popular Books</p>
-            <button onClick={handleSeeMoreBooks}>
-              See more <CaretRight weight="bold" />
-            </button>
-          </TopSubtitle>
-          <CardsContainer>
-            {popularBooks &&
-              popularBooks.map((book) => {
-                return (
-                  <BookCardModal key={book.id} small={true} bookId={book.id} />
-                )
-              })}
-          </CardsContainer>
-        </PopularBooks>
-      </HomeContent>
-    </HomeContainer>
+          </PopularBooks>
+        </HomeContent>
+      </HomeContainer>
+    </>
   )
 }

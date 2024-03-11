@@ -16,6 +16,7 @@ import Guest from '../../../public/icons/rocket.svg'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { NextSeo } from 'next-seo'
 
 export default function Login() {
   const router = useRouter()
@@ -43,40 +44,44 @@ export default function Login() {
   }, [router, status])
 
   return (
-    <Container>
-      <SideImage>
-        <Image src={Logo} className="logo" alt="" />
-        <Image
-          className="background-image"
-          src={HomeImage}
-          alt="Image of a girl on the couch reading a book"
-        />
-      </SideImage>
-      <LoginContainer>
-        <div className="login">
-          <WelcomeText>
-            <h1>Welcome to BookWise</h1>
-            <span>Login into your account or enter as guest</span>
-          </WelcomeText>
-          {hasAuthError && (
-            <AuthError>Falha ao logar, tente novamente.</AuthError>
-          )}
-          <div className="buttons">
-            <SocialLogin onClick={() => handleSocialLogin('google')}>
-              <Image src={Google} alt="Google's Logo" />
-              Login with Google
-            </SocialLogin>
-            <SocialLogin onClick={() => handleSocialLogin('github')}>
-              <Image src={Github} alt="Github's Logo" />
-              Login with Github
-            </SocialLogin>
-            <SocialLogin onClick={() => handleSocialLogin('guest')}>
-              <Image src={Guest} alt="Icon of a rocket" />
-              Enter as guest
-            </SocialLogin>
+    <>
+      <NextSeo title="Login | BookWise" />
+
+      <Container>
+        <SideImage>
+          <Image src={Logo} className="logo" alt="" />
+          <Image
+            className="background-image"
+            src={HomeImage}
+            alt="Image of a girl on the couch reading a book"
+          />
+        </SideImage>
+        <LoginContainer>
+          <div className="login">
+            <WelcomeText>
+              <h1>Welcome to BookWise</h1>
+              <span>Login into your account or enter as guest</span>
+            </WelcomeText>
+            {hasAuthError && (
+              <AuthError>Falha ao logar, tente novamente.</AuthError>
+            )}
+            <div className="buttons">
+              <SocialLogin onClick={() => handleSocialLogin('google')}>
+                <Image src={Google} alt="Google's Logo" />
+                Login with Google
+              </SocialLogin>
+              <SocialLogin onClick={() => handleSocialLogin('github')}>
+                <Image src={Github} alt="Github's Logo" />
+                Login with Github
+              </SocialLogin>
+              <SocialLogin onClick={() => handleSocialLogin('guest')}>
+                <Image src={Guest} alt="Icon of a rocket" />
+                Enter as guest
+              </SocialLogin>
+            </div>
           </div>
-        </div>
-      </LoginContainer>
-    </Container>
+        </LoginContainer>
+      </Container>
+    </>
   )
 }

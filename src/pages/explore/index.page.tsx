@@ -13,6 +13,7 @@ import { api } from '@/lib/axios'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Category } from '@prisma/client'
+import { NextSeo } from 'next-seo'
 
 export interface BookData {
   author: string
@@ -60,51 +61,55 @@ export default function Explore() {
   })
 
   return (
-    <ExploreContainer>
-      <Sidebar />
-      <ExploreContent>
-        <div className="top">
-          <PageTitle>
-            <Binoculars size={32} />
-            <h1>Explore</h1>
-          </PageTitle>
-          <SearchInput
-            placeholder="Search for books or authors"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="tags">
-          <Tag
-            isSelected={selectedTag === null}
-            onClick={() => handleSelectTag(null)}
-          >
-            All
-          </Tag>
-          {categories &&
-            categories.map((category) => (
-              <Tag
-                key={category.id}
-                isSelected={selectedTag === category.id}
-                onClick={() => handleSelectTag(category.id)}
-              >
-                {category.name}
-              </Tag>
-            ))}
-        </div>
-        <ExploreBooksGrid>
-          {filteredBooks &&
-            filteredBooks.map((book) => {
-              return (
-                <BookCardModal
-                  key={`allBooks-${book.id}`}
-                  bookId={book.id}
-                  small
-                />
-              )
-            })}
-        </ExploreBooksGrid>
-      </ExploreContent>
-    </ExploreContainer>
+    <>
+      <NextSeo title="Explore | BookWise" />
+
+      <ExploreContainer>
+        <Sidebar />
+        <ExploreContent>
+          <div className="top">
+            <PageTitle>
+              <Binoculars size={32} />
+              <h1>Explore</h1>
+            </PageTitle>
+            <SearchInput
+              placeholder="Search for books or authors"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="tags">
+            <Tag
+              isSelected={selectedTag === null}
+              onClick={() => handleSelectTag(null)}
+            >
+              All
+            </Tag>
+            {categories &&
+              categories.map((category) => (
+                <Tag
+                  key={category.id}
+                  isSelected={selectedTag === category.id}
+                  onClick={() => handleSelectTag(category.id)}
+                >
+                  {category.name}
+                </Tag>
+              ))}
+          </div>
+          <ExploreBooksGrid>
+            {filteredBooks &&
+              filteredBooks.map((book) => {
+                return (
+                  <BookCardModal
+                    key={`allBooks-${book.id}`}
+                    bookId={book.id}
+                    small
+                  />
+                )
+              })}
+          </ExploreBooksGrid>
+        </ExploreContent>
+      </ExploreContainer>
+    </>
   )
 }
