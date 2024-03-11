@@ -41,8 +41,7 @@ export function Sidebar() {
     if (currentPath === '/profile/[userId]') {
       const routeId = router.query.userId
       const isOwnProfile = routeId === session?.user?.id
-      isOwnProfile && setActivePage('profile/me')
-      return
+      return isOwnProfile ? setActivePage('profile/me') : setActivePage('')
     }
 
     setActivePage(router.pathname.substring(1))
