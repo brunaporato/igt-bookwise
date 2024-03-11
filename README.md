@@ -26,7 +26,7 @@ BookWise is a full-stack web application built end-to-end by one developer <smal
 You can both use the project local or online.
 
 1. Online:
-Check the project [clicking here](https://igt-bookwise-seven.vercel.app/)
+- Check the project [clicking here](https://igt-bookwise-seven.vercel.app/)
 
 2. Local:
 - clone this repository
@@ -69,6 +69,7 @@ npm run dev
 
 ## Usage
 Upon opening the app, you'll encounter the login screen, where you have the option to sign in using your GitHub or Google account. If you prefer not to sign in, you're welcome to enter as a guest.
+<br />
 <small>Note: Guest users have limited access to features.</small>
 
 After logging in, you'll be directed to the home page where you can explore recent reviews and popular books. Dive deeper into the Explore section to browse books by genre or utilize the search function to find specific titles. Click on any book to access comprehensive details, post your review, and interact with other users' reviews. Explore user profiles to track reading progress, review history, and connect with fellow book enthusiasts.
@@ -76,5 +77,5 @@ After logging in, you'll be directed to the home page where you can explore rece
 ## Get in touch
 
 Contributions are welcome, feel free to fork and create a pull request with your changes or open an issue if you've found something. If you want to talk further about this project or future ones you can find me on:
-[Linkedin](https://linkedin.com/in/brunaporato)
-[Email](emailto:brunaporato@gmail.com)
+. [Linkedin](https://linkedin.com/in/brunaporato)
+. [Email](mailto:brunaporato@gmail.com)
