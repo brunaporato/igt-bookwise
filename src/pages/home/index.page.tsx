@@ -89,7 +89,7 @@ export default function Home() {
             <h1>Home</h1>
           </PageTitle>
 
-          {lastUserReview && (
+          {lastUserReview?.book && (
             <Timeline>
               <TopSubtitle>
                 <p>Your last reading</p>
