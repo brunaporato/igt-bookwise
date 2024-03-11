@@ -3,8 +3,11 @@ import { ReviewContainer } from './styles'
 import { Rating } from '@/pages/components/Rating'
 import { useRouter } from 'next/router'
 import { Book, Rating as RatingType, User } from '@prisma/client'
-import { getRelativeTimeString } from '@/utils/get-relative-time-string'
 import { ReviewWithAuthor } from '@/pages/components/BookCardModal'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 export type ReviewWithAuthorAndBook = RatingType & {
   user: User
@@ -16,10 +19,7 @@ interface ReviewProps {
 }
 
 export function Review({ review }: ReviewProps) {
-  const timeDistance = getRelativeTimeString(
-    new Date(review.created_at),
-    'en-US',
-  )
+  const timeDistance = dayjs(review.created_at).fromNow()
 
   const router = useRouter()
 
