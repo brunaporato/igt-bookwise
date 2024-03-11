@@ -71,15 +71,17 @@ export function Sidebar() {
               <span>Explore</span>
             </MenuButton>
           </li>
-          <li>
-            <MenuButton
-              selected={activePage === 'profile/me'}
-              onClick={() => handleClickMenu(`profile/${session?.user?.id}`)}
-            >
-              <User size={24} />
-              <span>Profile</span>
-            </MenuButton>
-          </li>
+          {status === 'authenticated' && (
+            <li>
+              <MenuButton
+                selected={activePage === 'profile/me'}
+                onClick={() => handleClickMenu(`profile/${session?.user?.id}`)}
+              >
+                <User size={24} />
+                <span>Profile</span>
+              </MenuButton>
+            </li>
+          )}
         </Menu>
       </section>
       <Profile>
@@ -87,7 +89,7 @@ export function Sidebar() {
           <>
             <Avatar
               avatar={String(session?.user?.image)}
-              onClick={() => handleClickMenu(`/profile/${session?.user?.id}`)}
+              onClick={() => handleClickMenu(`profile/${session?.user?.id}`)}
             />
             <p>{session?.user?.name}</p>
             <SidebarButton onClick={handleSignOut}>
