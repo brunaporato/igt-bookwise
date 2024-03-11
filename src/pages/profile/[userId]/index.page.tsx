@@ -27,7 +27,9 @@ import { useSession } from 'next-auth/react'
 import { CaretLeft } from '@phosphor-icons/react/dist/ssr'
 import { Book, CategoriesOnBooks, Category, Rating } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import { getRelativeTimeString } from '@/utils/get-relative-time-string'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 export interface ProfileRating extends Rating {
   book: Book & {
@@ -113,12 +115,7 @@ export default function Profile() {
             ? filteredReviews.map((review) => {
                 return (
                   <div className="post" key={review.id}>
-                    <span>
-                      {getRelativeTimeString(
-                        new Date(review.created_at),
-                        'en-US',
-                      )}
-                    </span>
+                    <span>{dayjs(review.created_at).fromNow()}</span>
                     <ProfileReview review={review} />
                   </div>
                 )

@@ -7,7 +7,8 @@ import { useSession } from 'next-auth/react'
 import { ReviewWithAuthorAndBook } from '../Review'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
-import { getRelativeTimeString } from '@/utils/get-relative-time-string'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 export type BookWithAVGRating = Book & {
   AVGRating: number
@@ -22,6 +23,8 @@ interface BookCardProps {
   explore?: boolean
 }
 
+dayjs.extend(relativeTime)
+
 export function BookCard({
   book,
   review,
@@ -35,7 +38,7 @@ export function BookCard({
 
   if (review) {
     user = review.user
-    timeDistance = getRelativeTimeString(new Date(review.created_at), 'en-US')
+    timeDistance = dayjs(review.created_at).fromNow()
   } else {
     user = data?.user
   }
