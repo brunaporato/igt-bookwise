@@ -14,12 +14,15 @@ import Google from '../../../public/icons/google-logo.svg'
 import Github from '../../../public/icons/github-logo.svg'
 import Guest from '../../../public/icons/rocket.svg'
 import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 
 export default function Login() {
   const router = useRouter()
 
   const hasAuthError = !!router.query.error
+
+  const { status } = useSession()
 
   async function handleSocialLogin(provider: 'github' | 'google' | 'guest') {
     if (provider === 'guest') {
@@ -28,6 +31,16 @@ export default function Login() {
 
     await signIn(provider)
   }
+
+  useEffect(() => {
+    async function redirectWhenLoggedIn() {
+      if (status === 'authenticated') {
+        await router.push('/home')
+      }
+    }
+
+    redirectWhenLoggedIn()
+  }, [router, status])
 
   return (
     <Container>
