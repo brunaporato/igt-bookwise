@@ -26,6 +26,7 @@ import {
 } from '@prisma/client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
+import { useSession } from 'next-auth/react'
 
 export type ReviewWithAuthor = RatingType & {
   user: User
@@ -54,7 +55,8 @@ export function BookCardModal({
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false)
   const [userReview, setUserReview] = useState('')
   const [userRating, setUserRating] = useState(0)
-  const isUserLogged = true
+
+  const { data: session, status } = useSession()
 
   const queryClient = useQueryClient()
 
@@ -81,10 +83,16 @@ export function BookCardModal({
 
   const { mutateAsync: handleReview } = useMutation({
     mutationFn: async () => {
-      await api.post(`/books/${bookId}/review`, {
-        description: userReview,
-        rate: userRating,
-      })
+      try {
+        await api.post(`/books/${bookId}/review`, {
+          description: userReview,
+          rate: userRating,
+        })
+      } catch (error) {
+        alert(
+          "Error while reviewing. Try again or check if you've already reviewed it.",
+        )
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -98,6 +106,8 @@ export function BookCardModal({
   })
 
   function handleCloseCommentBox() {
+    setUserReview('')
+    setUserRating(0)
     setIsCommentBoxOpen(false)
   }
 
@@ -169,7 +179,7 @@ export function BookCardModal({
               <CommentsBox>
                 <div className="title">
                   <h2>Reviews</h2>
-                  {isUserLogged ? (
+                  {status === 'authenticated' ? (
                     <button
                       className={isCommentBoxOpen ? 'no-display' : ''}
                       onClick={handleOpenCommentBox}
@@ -180,15 +190,12 @@ export function BookCardModal({
                     <LoginModal />
                   )}
                 </div>
-                {isCommentBoxOpen && isUserLogged && (
+                {isCommentBoxOpen && status === 'authenticated' && (
                   <ReviewInputBox onSubmit={handleFormSubmit}>
                     <div className="top">
                       <div className="user-info">
-                        <Avatar
-                          avatar="https://github.com/brunaporato.png"
-                          variant="card"
-                        />
-                        Cristofer Rosser
+                        <Avatar avatar={session.user?.image} variant="card" />
+                        {session.user?.name}
                       </div>
                       <RatingInput
                         onRateChange={(newRate) => setUserRating(newRate)}
