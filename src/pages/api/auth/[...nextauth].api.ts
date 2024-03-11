@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
-          avatar_url: profile.picture,
+          image: profile.picture,
         }
       },
       authorization: {
@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           id: profile.id.toString(),
           name: profile.name,
           email: profile.email,
-          avatar_url: profile.avatar_url,
+          image: profile.avatar_url,
         }
       },
     }),
