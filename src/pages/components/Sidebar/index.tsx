@@ -13,6 +13,8 @@ import { Avatar } from '../Avatar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession, signOut } from 'next-auth/react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@/lib/axios'
 
 // TODO: fix session.user.id - does not recognize the type although there is id comming from session
 
@@ -21,6 +23,15 @@ export function Sidebar() {
   const router = useRouter()
 
   const { data: session, status } = useSession()
+
+  const { data: userId } = useQuery({
+    queryKey: ['user', session?.user],
+    queryFn: async () => {
+      const { data } = await api.get(`/users?userEmail=${session?.user?.email}`)
+
+      return data.user.id
+    },
+  })
 
   function handleClickMenu(page: string) {
     router.push(`/${page}`)
@@ -40,12 +51,12 @@ export function Sidebar() {
 
     if (currentPath === '/profile/[userId]') {
       const routeId = router.query.userId
-      const isOwnProfile = routeId === session?.user?.id
+      const isOwnProfile = routeId === userId
       return isOwnProfile ? setActivePage('profile/me') : setActivePage('')
     }
 
     setActivePage(router.pathname.substring(1))
-  }, [router.pathname, router.query.userId, session?.user?.id])
+  }, [router.pathname, router.query.userId, userId])
 
   return (
     <Container>
@@ -74,7 +85,7 @@ export function Sidebar() {
             <li>
               <MenuButton
                 selected={activePage === 'profile/me'}
-                onClick={() => handleClickMenu(`profile/${session?.user?.id}`)}
+                onClick={() => handleClickMenu(`profile/${userId}`)}
               >
                 <User size={24} />
                 <span>Profile</span>
@@ -88,7 +99,7 @@ export function Sidebar() {
           <>
             <Avatar
               avatar={String(session?.user?.image)}
-              onClick={() => handleClickMenu(`profile/${session?.user?.id}`)}
+              onClick={() => handleClickMenu(`profile/${userId}`)}
             />
             <p>{session?.user?.name}</p>
             <SidebarButton onClick={handleSignOut}>
