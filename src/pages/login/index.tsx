@@ -72,7 +72,7 @@ export default function Login() {
             </SocialLogin>
             <SocialLogin onClick={() => handleSocialLogin('guest')}>
               <Image src={Guest} alt="Icon of a rocket" />
-              Login as guest
+              Enter as guest
             </SocialLogin>
           </div>
         </div>
