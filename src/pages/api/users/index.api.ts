@@ -49,23 +49,27 @@ export default async function handler(
       },
     })
 
-    const readPages = userById?.ratings.reduce(
-      (acc, rating) => acc + rating.book.total_pages,
-      0,
-    )
+    const readPages = userById?.ratings
+      ? userById?.ratings.reduce(
+          (acc, rating) => acc + rating.book.total_pages,
+          0,
+        )
+      : []
+
     const ratedBooks = userById?.ratings.length
-    const readAuthors = userById?.ratings.reduce((acc, rating) => {
-      if (!acc.includes(rating.book.author)) {
-        acc.push(rating.book.author)
-      }
-      return acc
-    }, [] as string[])
+    const readAuthors = userById?.ratings
+      ? userById?.ratings.reduce((acc, rating) => {
+          if (!acc.includes(rating.book.author)) {
+            acc.push(rating.book.author)
+          }
+          return acc
+        }, [] as string[])
+      : []
+
     const categories = userById?.ratings.flatMap((rating) =>
       rating.book.categories.flatMap((category) => category.category.name),
     )
-    const mostReadCategory = categories
-      ? getMostFrequentString(categories)
-      : null
+    const mostReadCategory = categories && getMostFrequentString(categories)
 
     const profileData = {
       user: {
