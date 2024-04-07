@@ -23,7 +23,7 @@ BookWise is a full-stack web application built end-to-end by one developer <smal
 
 ## Accessing the project
 
-You can both use the project local or online.
+You can use the project both local and online.
 
 1. Online:
 - Check the project [clicking here](https://igt-bookwise-seven.vercel.app/)
